@@ -3,7 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using CSBlog.Data;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddRazorPages()
+  .AddRazorRuntimeCompilation();
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
