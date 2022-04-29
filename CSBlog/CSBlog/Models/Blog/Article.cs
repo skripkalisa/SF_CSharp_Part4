@@ -7,7 +7,7 @@ public class Article
   public string Title { get; set; } = string.Empty;
   public string Text { get; set; } = string.Empty;
   public List<Tag>? Tags { get; set; }
-  public List<Comment> Comments { get; set; }
+  public List<Comment> Comments { get; set; } = null!;
   public DateTime Published { get; set; }
   public DateTime Edited { get; set; }
 }
