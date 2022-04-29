@@ -41,5 +41,6 @@ app.MapControllerRoute(
   name: "default",
   pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
-
+// получение данных
+// app.MapGet("/", (ApplicationContext db) => db.Users.ToList());
 app.Run();
