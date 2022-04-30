@@ -7,9 +7,9 @@ namespace CSBlog.Controllers;
 
 public class ArticleController: Controller
 {  
-  private readonly IRepository<Article> _repo;
+  private readonly IBlogRepository _repo;
   
-  public ArticleController(IRepository<Article> repo)
+  public ArticleController(IBlogRepository repo)
   {
     _repo = repo;
   }
@@ -20,14 +20,14 @@ public class ArticleController: Controller
     // return View();
     return Content("Article");
   }
-  
-  // [Authorize]
-  // [HttpPost]
-  // public async Task<IActionResult> Create(Article article)
-  // {
-  //   await _repo.Create(article);
-  //   return Content("Article");
-  //   // return View(article);
-  // }
+
+  [Authorize]
+  [HttpPost]
+  public async Task<IActionResult> Create(Article article)
+  {
+    await _repo.AddArticle(article);
+    return Content("Create Article");
+    // return View(article);
+  }
   
 }
