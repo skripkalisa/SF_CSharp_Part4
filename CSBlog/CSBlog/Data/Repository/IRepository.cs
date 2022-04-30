@@ -1,6 +1,4 @@
-using CSBlog.Models.Blog;
-
-namespace CSBlog.Models.Repository;
+namespace CSBlog.Data.Repository;
 
 public interface IRepository<T> where T : class
 {

@@ -1,4 +1,6 @@
-namespace CSBlog.Models.Repository;
+using CSBlog.Models.User;
+
+namespace CSBlog.Data.Repository;
 
 public interface IUserRepository
 {
