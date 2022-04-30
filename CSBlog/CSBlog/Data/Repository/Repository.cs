@@ -8,40 +8,40 @@ public class Repository<T> : IRepository<T> where T : class
 
   public DbSet<T> Set { get; private set; }
 
-  public Repository(ApplicationDbContext db)
+  protected Repository(ApplicationDbContext db)
   {
     _db = db;
-    var set =_db.Set<T>();
+    var set = _db.Set<T>();
     set.Load();
 
     Set = set;
   }
 
-  public void Create(T item)
+  public async Task Create(T item)
   {
     Set.Add(item);
-    _db.SaveChanges();
+    await _db.SaveChangesAsync();
   }
 
-  public void Delete(T item)
+  public async Task Delete(T item)
   {
     Set.Remove(item);
-    _db.SaveChanges();
+    await _db.SaveChangesAsync();
   }
 
-  public T Get(int id)
-  {
-    return Set.Find(id);
-  }
+  // public T Get(int id)
+  // {
+  //   return Set.Find(id);// ?? throw new InvalidOperationException();
+  // }
 
   public IEnumerable<T> GetAll()
   {
     return Set;
   }
 
-  public void Update(T item)
+  public async Task Update(T item)
   {
     Set.Update(item);
-    _db.SaveChanges();
+    await _db.SaveChangesAsync();
   }
 }

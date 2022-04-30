@@ -16,7 +16,12 @@ public sealed class BlogContext : DbContext
   {
     Database.EnsureCreated();
   }
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
 
+        modelBuilder.Entity<Article>();            
+    }
   // protected override void OnModelCreating(ModelBuilder modelBuilder)
   // {
   //   modelBuilder.Entity<User>().HasData(
