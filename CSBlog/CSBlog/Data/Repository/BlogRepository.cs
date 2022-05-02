@@ -1,90 +1,139 @@
 using CSBlog.Models.Blog;
+using Microsoft.EntityFrameworkCore;
 
 namespace CSBlog.Data.Repository;
 
 public class BlogRepository : IBlogRepository
 {
-  
-   private readonly ApplicationDbContext _context;
+  private readonly ApplicationDbContext _context;
 
-   public BlogRepository(ApplicationDbContext context)
-   {
-     _context = context;
-   }
-
-   public async Task AddArticle(Article article)
-   {
-     await _context.AddAsync(article);
-     await _context.SaveChangesAsync();
-   }
-
-  public Task EditArticle(Guid articleId)
+  public BlogRepository(ApplicationDbContext context)
   {
-    throw new NotImplementedException();
+    _context = context;
   }
 
-  public Task<Article[]> GetAllArticles()
+
+  public async Task AddArticle(Article article)
   {
-    throw new NotImplementedException();
+    article.Published = DateTime.Now;
+    await _context.AddAsync(article);
+    await _context.SaveChangesAsync();
   }
 
-  public Task<Article[]> GetArticlesByAuthor(Guid userId)
+  public async Task EditArticle(Article article)
   {
-    throw new NotImplementedException();
+    var art = await _context.Articles.FindAsync(article.Id);
+
+    if (art != null)
+    {
+      art.Author = article.Author;
+
+      art.Title = article.Title;
+
+      art.Text = article.Text;
+
+      foreach (var tag in article.Tags)
+      {
+        if (!art.Tags.Contains(tag))
+          art.Tags.Add(tag);
+      }
+
+      art.Edited = DateTime.Now;
+    }
+
+    await _context.SaveChangesAsync();
   }
 
-  public Task DeleteArticle(Guid articleId)
+  public async Task<Article[]> GetAllArticles()
   {
-    throw new NotImplementedException();
+    return await _context.Articles.ToArrayAsync();
   }
 
-  public Task AddComment(Comment comment)
+  public async Task<Article[]> GetArticlesByAuthor(Guid userId)
   {
-    throw new NotImplementedException();
+    return await _context.Articles.Where(art => art.UserId == userId).ToArrayAsync();
   }
 
-  public Task EditComment(Guid commentId)
+  public async Task DeleteArticle(Guid articleId)
   {
-    throw new NotImplementedException();
+    var article = _context.Articles.Where(art => art.Id == articleId);
+    _context.Remove(article);
+    await _context.SaveChangesAsync();
   }
 
-  public Task GetCommentById(Guid commentId)
+  public async Task AddComment(Comment comment)
   {
-    throw new NotImplementedException();
+    comment.Added = DateTime.Now;
+    await _context.AddAsync(comment);
+    await _context.SaveChangesAsync();
   }
 
-  public Task<Comment[]> GetAllComments()
+  public async Task EditComment(Comment comment)
   {
-    throw new NotImplementedException();
+    var com = await _context.Comments.FindAsync(comment.Id);
+
+    if (com != null)
+    {
+      com.Text = comment.Text;
+      com.Changed = DateTime.Now;
+    }
+
+    await _context.SaveChangesAsync();
   }
 
-  public Task DeleteComment(Guid commentId)
+  public Comment GetCommentById(Guid commentId)
   {
-    throw new NotImplementedException();
+    var comment = _context.Comments.Find(commentId);
+    if (comment != null) return comment;
+
+    throw new InvalidOperationException();
   }
 
-  public Task AddTag(Tag tag)
+  public async Task<Comment[]> GetAllComments()
   {
-    throw new NotImplementedException();
+    return await _context.Comments.ToArrayAsync();
   }
 
-  public Task EditTag(Guid tagId)
+  public async Task DeleteComment(Guid commentId)
   {
-    throw new NotImplementedException();
+    var comment = _context.Comments.Where(comm => comm.Id == commentId);
+    _context.Remove(comment);
+    await _context.SaveChangesAsync();
   }
 
-  public Task GetTagById(Guid tagId)
+  public async Task AddTag(Tag tag)
   {
-    throw new NotImplementedException();
+    await _context.AddAsync(tag);
+    await _context.SaveChangesAsync();
   }
 
-  public Task<Tag[]> GetAllTags()
+
+  public async Task EditTag(Tag tag)
   {
-    throw new NotImplementedException();
+    var tg = await _context.Tags.FindAsync(tag.Id);
+
+    if (tg != null) tg.TagName = tag.TagName;
+
+    await _context.SaveChangesAsync();
   }
 
-  public Task DeleteTag(Guid tagId)
+  public Tag GetTagById(Guid tagId)
   {
-    throw new NotImplementedException();
+    var tag = _context.Tags.Find(tagId);
+    if (tag != null) return tag;
+
+    throw new InvalidOperationException();
+  }
+
+  public async Task<Tag[]> GetAllTags()
+  {
+    return await _context.Tags.ToArrayAsync();
+  }
+
+  public async Task DeleteTag(Guid tagId)
+  {
+    var tag = _context.Tags.Where(tag => tag.Id == tagId);
+    _context.Remove(tag);
+    await _context.SaveChangesAsync();
   }
 }

@@ -10,7 +10,7 @@ public interface IBlogRepository
   /// <param name="article"></param>
   /// <returns></returns>
   Task AddArticle(Article article);
-  Task EditArticle(Guid articleId);
+  Task EditArticle(Article article);
   Task<Article[]> GetAllArticles();
   Task<Article[]> GetArticlesByAuthor(Guid userId);
   Task DeleteArticle(Guid articleId);  
@@ -21,8 +21,8 @@ public interface IBlogRepository
   /// <param name="comment"></param>
   /// <returns></returns>
   Task AddComment(Comment comment);
-  Task EditComment(Guid commentId);
-  Task GetCommentById(Guid commentId);
+  Task EditComment(Comment comment);
+  Comment GetCommentById(Guid commentId);
   Task<Comment[]> GetAllComments();
   Task DeleteComment(Guid commentId);  
 
@@ -32,8 +32,8 @@ public interface IBlogRepository
   /// <param name="tag"></param>
   /// <returns></returns>
   Task AddTag(Tag tag);
-  Task EditTag(Guid tagId);
-  Task GetTagById(Guid tagId);
+  Task EditTag(Tag tag);
+  Tag GetTagById(Guid tagId);
   Task<Tag[]> GetAllTags();
   Task DeleteTag(Guid tagId);
 }

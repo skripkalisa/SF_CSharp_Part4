@@ -1,5 +1,4 @@
 using CSBlog.Data.Repository;
-using CSBlog.Models.Blog;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,8 +14,9 @@ public class ArticleController: Controller
   }
 
   // GET
-  public IActionResult Index()
+  public async Task<IActionResult> Index()
   {
+    await _repo.GetAllArticles();
     // return View();
     return Content("Article");
   }
@@ -28,6 +28,31 @@ public class ArticleController: Controller
     await _repo.AddArticle(article);
     return Content("Create Article");
     // return View(article);
+  }  
+  
+  [Authorize]
+  [HttpPost]
+  public async Task<IActionResult> Edit(Article article)
+  {
+    await _repo.EditArticle(article);
+    return Content("Edit Article");
+    // return View(article);
+  }  
+  
+  [Authorize]
+  [HttpPost]
+  public async Task<IActionResult> Delete(Guid articleId)
+  {
+    await _repo.DeleteArticle(articleId);
+    return Content("Delete Article");
+    // return View(article);
   }
   
+  [HttpGet]
+    public async Task<IActionResult> GetBy(Guid authorId)
+    {
+      var articles =  await _repo.GetArticlesByAuthor(authorId);
+    // return View();
+    return Content("Articles by author");
+  }
 }
