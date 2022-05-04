@@ -30,11 +30,17 @@ public class UserRepository : IUserRepository
       if (user.Login != string.Empty) blogUser.Login = user.Login;
       if (user.Avatar != string.Empty) blogUser.Avatar = user.Avatar;
       if (user.Avatar != string.Empty) blogUser.Avatar = user.Avatar;
-      if (user.UserRole.Role != string.Empty) blogUser.UserRole = user.UserRole;
+      if (user.UserRole.Count > 0)
+      {
+        foreach (var role in user.UserRole)
+        {
+          if (!blogUser.UserRole.Contains(role))
+            blogUser.UserRole.Add(role);
+        }
+      }
     }
 
     await _context.SaveChangesAsync();
-    
   }
 
   public User? GetUserById(string userId)
