@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CSBlog.Controllers;
 
+[Authorize(Policy = "User")]
 public class ArticleController: Controller
 {  
   private readonly IBlogRepository _repo;
@@ -14,6 +15,7 @@ public class ArticleController: Controller
   }
 
   // GET
+  [AllowAnonymous]
   public async Task<IActionResult> Index()
   {
     await _repo.GetAllArticles();
@@ -21,7 +23,7 @@ public class ArticleController: Controller
     return Content("Article");
   }
 
-  [Authorize]
+
   [HttpPost]
   public async Task<IActionResult> Create(Article article)
   {
@@ -30,7 +32,7 @@ public class ArticleController: Controller
     // return View(article);
   }  
   
-  [Authorize]
+
   [HttpPost]
   public async Task<IActionResult> Edit(Article article)
   {
@@ -39,7 +41,7 @@ public class ArticleController: Controller
     // return View(article);
   }  
   
-  [Authorize]
+
   [HttpPost]
   public async Task<IActionResult> Delete(Guid articleId)
   {

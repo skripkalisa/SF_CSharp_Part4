@@ -11,7 +11,7 @@ public interface IUserRepository
   /// <returns></returns>
   Task AddUser(User user);
   Task EditUser(User user);
-  User? GetUserById(Guid userId);
+  User? GetUserById(string userId);
   Task<User[]> GetAllUsers();
   Task DeleteUser(Guid userId);
 }

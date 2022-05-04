@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CSBlog.Controllers;
 
+[Authorize(Policy = "User")]
 public class CommentController : Controller
 {
   
@@ -15,7 +16,7 @@ public class CommentController : Controller
       _repo = repo;
     }
     // GET
-
+[AllowAnonymous]
   public async Task<IActionResult> Index()
   {
     await _repo.GetAllComments();
@@ -23,7 +24,7 @@ public class CommentController : Controller
     return Content("Comments");
   }
 
-  [Authorize]
+
   [HttpPost]
   public async Task<IActionResult> Create(Comment comment)
   {
@@ -32,7 +33,7 @@ public class CommentController : Controller
     // return View(Comment);
   }  
   
-  [Authorize]
+
   [HttpPost]
   public async Task<IActionResult> Edit(Comment comment)
   {
@@ -41,7 +42,7 @@ public class CommentController : Controller
     // return View(Comment);
   }  
   
-  [Authorize]
+
   [HttpPost]
   public async Task<IActionResult> Delete(Guid commentId)
   {

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CSBlog.Controllers;
 
+[Authorize(Policy = "Moderator")]
 public class TagController : Controller
 {
   private readonly IBlogRepository _repo;
@@ -14,7 +15,7 @@ public class TagController : Controller
     _repo = repo;
   }
   // GET
-
+[Authorize(Policy = "User")]
   public async Task<IActionResult> Index()
   {
     await _repo.GetAllTags();
@@ -22,7 +23,7 @@ public class TagController : Controller
     return Content("Tags");
   }
 
-  [Authorize]
+
   [HttpPost]
   public async Task<IActionResult> Create(Tag tag)
   {
@@ -31,7 +32,7 @@ public class TagController : Controller
     // return View(Tag);
   }  
   
-  [Authorize]
+
   [HttpPost]
   public async Task<IActionResult> Edit(Tag tag)
   {
@@ -40,7 +41,7 @@ public class TagController : Controller
     // return View(Tag);
   }  
   
-  [Authorize]
+
   [HttpPost]
   public async Task<IActionResult> Delete(Guid tagId)
   {

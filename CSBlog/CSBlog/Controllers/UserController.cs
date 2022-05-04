@@ -2,9 +2,11 @@ using CSBlog.Data.Repository;
 using CSBlog.Models.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.Operations;
 
 namespace CSBlog.Controllers;
 
+[Authorize(Policy = "Moderator")]
 public class UserController : Controller
 {
   private readonly IUserRepository _repo;
@@ -14,22 +16,23 @@ public class UserController : Controller
     _repo = repo;
   }
 
-  // GET
+  [Authorize(Policy = "User")]
   public async Task<IActionResult> Index()
   {
     await _repo.GetAllUsers();
     // return View();
-    return Content("User");
+    return Content("Users");
   }
 
+  [AllowAnonymous]
   [HttpGet]
-  public async Task<IActionResult> Register()
+  public IActionResult Register()
   {
-    await _repo.GetAllUsers();
     // return View();
     return Content("Register GET");
   }
 
+  [AllowAnonymous]
   [HttpPost]
   public async Task<IActionResult> Register(User user)
   {
@@ -39,7 +42,7 @@ public class UserController : Controller
   }
 
   [HttpPost]
-  [Authorize]
+  [Authorize(Policy = "User")]
   public async Task<IActionResult> Edit(User user)
   {
     await _repo.EditUser(user);
@@ -48,7 +51,6 @@ public class UserController : Controller
 
 
   [HttpPost]
-  [Authorize(Roles = "Administrator, Moderator")]
   public async Task<IActionResult> Delete(Guid userId)
   {
     await _repo.DeleteUser(userId);
@@ -56,9 +58,11 @@ public class UserController : Controller
   }
 
   [HttpGet]
-  public IActionResult GetBy(Guid userId)
+  [Authorize(Policy = "User")]
+  public IActionResult GetBy(string userId)
   {
     var user = _repo.GetUserById(userId);
+
     // return View();
     return Content("User by ID");
   }

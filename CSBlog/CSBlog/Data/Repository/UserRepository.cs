@@ -37,9 +37,10 @@ public class UserRepository : IUserRepository
     
   }
 
-  public User? GetUserById(Guid userId)
+  public User? GetUserById(string userId)
   {
-    var user = _context.BlogUsers.Find(userId.ToString());
+    var user = _context.BlogUsers.Find(userId);
+    Console.WriteLine("User by Id: " + user?.Login);
     return user ?? null;
   }
 

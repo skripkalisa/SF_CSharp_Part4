@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CSBlog.Controllers;
 
+[Authorize(Policy = "Admin")]
 public class RoleController : Controller
 {
   private readonly RoleManager<IdentityRole> _roleManager;
@@ -21,14 +22,14 @@ public class RoleController : Controller
     // return View();
   }
 
-  [Authorize(Roles = "Administrator")]
+
   public IActionResult Create()
   {
     return Content("Role Create get");
     // return View();
   }
 
-  [Authorize(Roles = "Administrator")]
+
   [HttpPost]
   public async Task<IActionResult> Create(UserRole userRole)
   {
@@ -42,14 +43,14 @@ public class RoleController : Controller
     // return View();
   }
 
-  [Authorize(Roles = "Administrator")]
+
   public IActionResult Edit()
   {
     return Content("Role Create get");
     // return View();
   }
 
-  [Authorize(Roles = "Administrator")]
+
   [HttpPost]
   public async Task<IActionResult> Edit(UserRole userRole)
   {
@@ -64,7 +65,7 @@ public class RoleController : Controller
     // return View();
   }  
   
-  [Authorize(Roles = "Administrator")]
+
   [HttpPost]
   public async Task<IActionResult> Delete(UserRole userRole)
   {
