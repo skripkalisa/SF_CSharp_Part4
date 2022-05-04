@@ -1,6 +1,5 @@
 ﻿using CSBlog.Models.Blog;
 using CSBlog.Models.User;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,7 +7,7 @@ namespace CSBlog.Data;
 
 public sealed class ApplicationDbContext : IdentityDbContext
 {
-  public  DbSet<User> Users { get; set; } = null!;
+  public  DbSet<User> BlogUsers { get; set; } = null!;
 
   public DbSet<Article> Articles { get; set; } = null!;
 

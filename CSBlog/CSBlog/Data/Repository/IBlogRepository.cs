@@ -4,7 +4,7 @@ namespace CSBlog.Data.Repository;
 
 public interface IBlogRepository
 {
-    /// <summary>
+  /// <summary>
   /// Article related methods
   /// </summary>
   /// <param name="article"></param>
@@ -13,8 +13,8 @@ public interface IBlogRepository
   Task EditArticle(Article article);
   Task<Article[]> GetAllArticles();
   Task<Article[]> GetArticlesByAuthor(Guid userId);
-  Task DeleteArticle(Guid articleId);  
-  
+  Task DeleteArticle(Guid articleId);
+
   /// <summary>
   /// Commentary related methods
   /// </summary>
@@ -24,7 +24,7 @@ public interface IBlogRepository
   Task EditComment(Comment comment);
   Comment GetCommentById(Guid commentId);
   Task<Comment[]> GetAllComments();
-  Task DeleteComment(Guid commentId);  
+  Task DeleteComment(Guid commentId);
 
   /// <summary>
   /// Tag related methods

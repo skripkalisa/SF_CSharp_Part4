@@ -52,7 +52,7 @@ public class TagController : Controller
   [HttpGet]
   public  IActionResult GetBy(Guid tagId)
   {
-    var Tag =   _repo.GetTagById(tagId);
+    var tag =   _repo.GetTagById(tagId);
     // return View();
     return Content("Tag by ID");
   }

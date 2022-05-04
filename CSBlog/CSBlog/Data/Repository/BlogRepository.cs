@@ -85,8 +85,7 @@ public class BlogRepository : IBlogRepository
   {
     var comment = _context.Comments.Find(commentId);
     if (comment != null) return comment;
-
-    throw new InvalidOperationException();
+    return comment ?? new Comment();
   }
 
   public async Task<Comment[]> GetAllComments()
@@ -120,9 +119,7 @@ public class BlogRepository : IBlogRepository
   public Tag GetTagById(Guid tagId)
   {
     var tag = _context.Tags.Find(tagId);
-    if (tag != null) return tag;
-
-    throw new InvalidOperationException();
+    return tag ?? new Tag();
   }
 
   public async Task<Tag[]> GetAllTags()

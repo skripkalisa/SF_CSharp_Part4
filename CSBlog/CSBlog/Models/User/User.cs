@@ -9,4 +9,5 @@ public class User : IdentityUser
   public string LastName { get; set; } = string.Empty;
   public string Login { get; set; } = string.Empty;
   public string Avatar { get; set; } = string.Empty;
+  public UserRole UserRole { get; set; } = null!;
 }
