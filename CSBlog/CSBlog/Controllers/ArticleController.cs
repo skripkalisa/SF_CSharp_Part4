@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CSBlog.Controllers;
 
-[Authorize(Policy = "User")]
+// [Authorize(Policy = "User")]
 public class ArticleController: Controller
 {  
   private readonly IBlogRepository _repo;
@@ -19,11 +19,17 @@ public class ArticleController: Controller
   public async Task<IActionResult> Index()
   {
     await _repo.GetAllArticles();
-    // return View();
-    return Content("Article");
+    return View();
+    // return Content("Article");
   }
 
 
+  [HttpGet]
+  public  IActionResult Create()
+  {
+    return View();
+  }  
+  
   [HttpPost]
   public async Task<IActionResult> Create(Article article)
   {
