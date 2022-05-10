@@ -9,7 +9,8 @@
   @* <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/5.1.0/journal/bootstrap.min.css"> *@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
-  <link rel="stylesheet" href="~/CSBlog.styles.css" asp-append-version="true"/>
+  @* <link rel="stylesheet" href="~/CSBlog.styles.css" asp-append-version="true"/> *@
+
 </head>
 <body>
 <header>
@@ -22,21 +23,21 @@
       </button>
       <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
         <ul class="navbar-nav flex-grow-1">
-          
+
           <li class="nav-item">
             <a class="nav-link text-dark" asp-area="" asp-controller="Article" asp-action="Index">Articles</a>
-          </li> 
-    
-          
+          </li>
+
+
           <li class="nav-item">
             <a class="nav-link text-dark" asp-area="" asp-controller="Comment" asp-action="Index">Comments</a>
-          </li>          
+          </li>
           <li class="nav-item">
             <a class="nav-link text-dark" asp-area="" asp-controller="Tag" asp-action="Index">Tags</a>
-          </li>          
+          </li>
           <li class="nav-item">
             <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Users</a>
-          </li>          
+          </li>
           <li class="nav-item">
             <a class="nav-link text-dark" asp-area="" asp-controller="Role" asp-action="Index">Roles</a>
           </li>
@@ -51,7 +52,6 @@
     @RenderBody()
   </main>
 </div>
-
 
 
 <footer class="bg-light text-center text-lg-start border-top footer text-muted">
@@ -89,8 +89,8 @@
 
   <!-- Copyright -->
   <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-    <a class="text-dark"  asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-    &copy; 2022 - CSBlog - Copyright: 
+    <a class="text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    &copy; 2022 - CSBlog - Copyright:
     <a href="#">CSBlog.site</a>
   </div>
   <!-- Copyright -->
@@ -98,6 +98,8 @@
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>
+<partial name="_ValidationScriptsPartial"></partial>
 @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>

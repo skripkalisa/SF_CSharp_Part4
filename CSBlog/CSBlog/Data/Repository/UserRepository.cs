@@ -28,8 +28,8 @@ public class UserRepository : IUserRepository
       if (user.FirstName != string.Empty) blogUser.FirstName = user.FirstName;
       if (user.LastName != string.Empty) blogUser.LastName = user.LastName;
       if (user.Login != string.Empty) blogUser.Login = user.Login;
-      if (user.Avatar != string.Empty) blogUser.Avatar = user.Avatar;
-      if (user.Avatar != string.Empty) blogUser.Avatar = user.Avatar;
+      if (user.Password != string.Empty) blogUser.Password = user.Password;
+      if (user.Avatar != null ) blogUser.Avatar = user.Avatar;
       if (user.UserRole.Count > 0)
       {
         foreach (var role in user.UserRole)

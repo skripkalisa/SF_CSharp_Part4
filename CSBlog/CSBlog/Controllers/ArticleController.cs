@@ -1,14 +1,15 @@
 using CSBlog.Data.Repository;
+using CSBlog.Models.Blog;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CSBlog.Controllers;
 
 // [Authorize(Policy = "User")]
-public class ArticleController: Controller
-{  
+public class ArticleController : Controller
+{
   private readonly IBlogRepository _repo;
-  
+
   public ArticleController(IBlogRepository repo)
   {
     _repo = repo;
@@ -25,19 +26,26 @@ public class ArticleController: Controller
 
 
   [HttpGet]
-  public  IActionResult Create()
+  public IActionResult Create()
   {
     return View();
-  }  
-  
+  }
+
+  // [HttpPost]
+  // public async Task<IActionResult> Create(Article article)
+  // {
+  //   await _repo.AddArticle(article);
+  //   return Content("Create Article");
+  //   // return View(article);
+  // }  
+
   [HttpPost]
-  public async Task<IActionResult> Create(Article article)
+  public IActionResult Create(Article article)
   {
-    await _repo.AddArticle(article);
-    return Content("Create Article");
-    // return View(article);
-  }  
-  
+    if (!ModelState.IsValid) return View(article);
+    return Json(article);
+    // return View();
+  }
 
   [HttpPost]
   public async Task<IActionResult> Edit(Article article)
@@ -45,8 +53,8 @@ public class ArticleController: Controller
     await _repo.EditArticle(article);
     return Content("Edit Article");
     // return View(article);
-  }  
-  
+  }
+
 
   [HttpPost]
   public async Task<IActionResult> Delete(Guid articleId)
@@ -55,11 +63,11 @@ public class ArticleController: Controller
     return Content("Delete Article");
     // return View(article);
   }
-  
+
   [HttpGet]
-    public async Task<IActionResult> GetBy(Guid authorId)
-    {
-      var articles =  await _repo.GetArticlesByAuthor(authorId);
+  public async Task<IActionResult> GetBy(Guid authorId)
+  {
+    var articles = await _repo.GetArticlesByAuthor(authorId);
     // return View();
     return Content("Articles by author");
   }

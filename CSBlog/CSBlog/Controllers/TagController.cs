@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CSBlog.Controllers;
 
-[Authorize(Policy = "Moderator")]
+// [Authorize(Policy = "Moderator")]
 public class TagController : Controller
 {
   private readonly IBlogRepository _repo;
@@ -14,24 +14,37 @@ public class TagController : Controller
   {
     _repo = repo;
   }
+
   // GET
-[Authorize(Policy = "User")]
+// [Authorize(Policy = "User")]
   public async Task<IActionResult> Index()
   {
     await _repo.GetAllTags();
-    // return View();
-    return Content("Tags");
+    return View();
+    // return Content("Tags");
   }
 
-
-  [HttpPost]
-  public async Task<IActionResult> Create(Tag tag)
+  public IActionResult Create()
   {
-    await _repo.AddTag(tag);
-    return Content("Create Tag");
-    // return View(Tag);
-  }  
-  
+    return View();
+  }
+
+  //
+  // [HttpPost]
+  // public async Task<IActionResult> Create(Tag tag)
+  // {
+  //   await _repo.AddTag(tag);
+  //   return Content("Create Tag");
+  //   // return View(Tag);
+  // }  
+  [HttpPost]
+  public IActionResult Create(Tag tag)
+  {
+    if (!ModelState.IsValid) return View(tag);
+
+    return Json(tag);
+  }
+
 
   [HttpPost]
   public async Task<IActionResult> Edit(Tag tag)
@@ -39,8 +52,8 @@ public class TagController : Controller
     await _repo.EditTag(tag);
     return Content("Edit Tag");
     // return View(Tag);
-  }  
-  
+  }
+
 
   [HttpPost]
   public async Task<IActionResult> Delete(Guid tagId)
@@ -49,11 +62,11 @@ public class TagController : Controller
     return Content("Delete Tag");
     // return View(Tag);
   }
-  
+
   [HttpGet]
-  public  IActionResult GetBy(Guid tagId)
+  public IActionResult GetBy(Guid tagId)
   {
-    var tag =   _repo.GetTagById(tagId);
+    var tag = _repo.GetTagById(tagId);
     // return View();
     return Content("Tag by ID");
   }

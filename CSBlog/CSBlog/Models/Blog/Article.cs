@@ -1,19 +1,21 @@
 using System.ComponentModel.DataAnnotations;
-using CSBlog.Models.Blog;
-using CSBlog.Models.User;
+namespace CSBlog.Models.Blog;
+
 
 public class Article
 {
-  public Guid Id { get; set; } 
+  public Guid Id { get; set; }  = Guid.NewGuid();
   public Guid UserId { get; set; }
-  [Required]
-  public User Author { get; set; }  = null!;
-  [Required]
+
+  public User.User Author { get; set; } = null!;
+
+  [Required (ErrorMessage = "This field is required.")]
+  [StringLength(64)]
   public string Title { get; set; } = string.Empty;
-  [Required]
+  [Required (ErrorMessage = "This field is required.")]
   public string Text { get; set; } = string.Empty;
   public List<Tag> Tags { get; set; } = null!;
   public List<Comment> Comments { get; set; } = null!;
-  public DateTime Published { get; set; }
+  public DateTime Published { get; set; } = DateTime.Now;
   public DateTime Edited { get; set; }
 }

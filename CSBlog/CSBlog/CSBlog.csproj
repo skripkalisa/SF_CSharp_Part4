@@ -23,6 +23,25 @@
 
     <ItemGroup>
       <Folder Include="Pages" />
+      <Folder Include="Views\Blog" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Views\Comment\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Comment\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Tag\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Tag\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Blog\Article\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Blog\Article\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Blog\Comment\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Blog\Comment\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Blog\Tag\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Blog\Tag\Index.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="Views\Article\Create.cshtml" />
+      <AdditionalFiles Include="Views\Article\Index.cshtml" />
     </ItemGroup>
 
 </Project>

@@ -1,8 +1,8 @@
-using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using CSBlog.Data;
 using CSBlog.Data.Repository;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages()
@@ -23,6 +23,7 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("Moderator", policy => policy.RequireClaim("Role", "Admin, Moderator"));
     options.AddPolicy("User", policy => policy.RequireClaim("Role", "Admin, Moderator, User"));
 });
+builder.Services.AddSingleton<ITempDataProvider, CookieTempDataProvider>();
 builder.Services.AddScoped<IBlogRepository, BlogRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 var app = builder.Build();

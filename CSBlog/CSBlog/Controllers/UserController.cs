@@ -27,15 +27,8 @@ public class UserController : Controller
       new() { Id = "3", FirstName = "George", LastName = "Harrison" },
       new() { Id = "4", FirstName = "Ringo", LastName = "Starr" }
     };
-    // ViewData["Users"] = users;
-    Console.WriteLine("Users");
-    Console.WriteLine();
-    foreach (var user in users)
-    {
-      Console.WriteLine(user.FirstName);
-    }
 
-    Console.WriteLine();
+
     return View(users);
     // return Content("Users");
   }
@@ -44,17 +37,18 @@ public class UserController : Controller
   [HttpGet]
   public IActionResult Register()
   {
-    // return View();
-    return Content("Register GET");
+    return View();
+    // return Content("Register GET");
   }
 
   [AllowAnonymous]
   [HttpPost]
   public async Task<IActionResult> Register(User user)
   {
+    if (!ModelState.IsValid) return View(user);
+
     await _repo.AddUser(user);
-    // return View();
-    return Content("Register POST");
+    return Json(user);
   }
 
   [HttpPost]
