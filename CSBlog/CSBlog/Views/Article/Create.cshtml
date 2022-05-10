@@ -1,4 +1,4 @@
-@model dynamic
+@model CSBlog.Models.Blog.Article
 
 @{
   ViewBag.Title = "New Article";
@@ -6,3 +6,39 @@
 }
 
 <h2>Create New Article</h2>
+<form method="post" asp-controller="Article" asp-action="Create">
+  <fieldset>
+    <legend>Article Fields</legend>
+    <div asp-validation-summary="ModelOnly" class="invalid-feedback"></div>
+    <div class="form-group">
+      <label asp-for="Title" class="col-form-label mt-4" for="article-title"></label>
+      <input type="text" asp-for="Title" class="form-control" placeholder="Article Title" id="article-title">
+      <span asp-validation-for="Title" class="invalid-feedback"></span>
+    </div>
+    <div class="form-group">
+      <label asp-for="Text" for="article-text" class="form-label mt-4"></label>
+      <textarea asp-for="Text" class="form-control" id="article-text" rows="3"></textarea>
+      <span asp-validation-for="Text" class="invalid-feedback"></span>
+    </div>
+    <div class="form-group">
+      <label class="form-label mt-4 mb-0">Tags</label>
+      <div class="tags pb-2">
+        @* @if (Model.Tags != null && Model.Tags.Count > 0) *@
+        @* { *@
+        @*   @foreach (var tag in Model.Tags) *@
+        @*   { *@
+        @*     <span class="badge rounded-pill bg-primary">@tag</span> *@
+        @*   } *@
+        @* } *@
+        <span class="badge rounded-pill bg-primary py-2 px-3">tag</span>
+      </div>
+      <div class="input-group mb-3">
+        <input asp-for="Tags" type="text" class="form-control" placeholder="Add a new tag" aria-label="Add a new tag" aria-describedby="button-add-tag">
+        <span asp-validation-for="Tags" class="invalid-feedback"></span>
+        <button class="btn btn-primary" type="button" id="button-add-tag">Add</button>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Create</button>
+  </fieldset>
+
+</form>
