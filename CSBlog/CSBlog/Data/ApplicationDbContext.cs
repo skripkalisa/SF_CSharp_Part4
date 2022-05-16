@@ -7,7 +7,7 @@ namespace CSBlog.Data;
 
 public sealed class ApplicationDbContext : IdentityDbContext
 {
-  public  DbSet<User> BlogUsers { get; set; } = null!;
+  public  DbSet<BlogUser> BlogUsers { get; set; } = null!;
 
   public DbSet<Article> Articles { get; set; } = null!;
 

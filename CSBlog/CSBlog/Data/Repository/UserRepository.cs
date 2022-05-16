@@ -1,4 +1,4 @@
-using CSBlog.Models.User;
+using CSBlog.Models.Blog;
 using Microsoft.EntityFrameworkCore;
 
 namespace CSBlog.Data.Repository;
@@ -12,13 +12,13 @@ public class UserRepository : IUserRepository
     _context = context;
   }
 
-  public async Task AddUser(User user)
+  public async Task AddUser(BlogUser user)
   {
     await _context.AddAsync(user);
     await _context.SaveChangesAsync();
   }
 
-  public async Task EditUser(User user)
+  public async Task EditUser(BlogUser user)
   {
     var blogUser = await _context.BlogUsers.FindAsync(user.Id);
 
@@ -43,21 +43,21 @@ public class UserRepository : IUserRepository
     await _context.SaveChangesAsync();
   }
 
-  public User? GetUserById(string userId)
+  public BlogUser? GetUserById(string userId)
   {
     var user = _context.BlogUsers.Find(userId);
     Console.WriteLine("User by Id: " + user?.Login);
     return user ?? null;
   }
 
-  public async Task<User[]> GetAllUsers()
+  public async Task<BlogUser[]> GetAllUsers()
   {
     return await _context.BlogUsers.ToArrayAsync();
   }
 
   public async Task DeleteUser(Guid userId)
   {
-    var user = _context.BlogUsers.Where(user => user.Id == userId.ToString());
+    var user = _context.BlogUsers.Where(user => user.Id == userId);
     _context.Remove(user);
     await _context.SaveChangesAsync();
   }

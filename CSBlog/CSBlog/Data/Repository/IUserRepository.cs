@@ -1,4 +1,4 @@
-using CSBlog.Models.User;
+using CSBlog.Models.Blog;
 
 namespace CSBlog.Data.Repository;
 
@@ -9,9 +9,9 @@ public interface IUserRepository
   /// </summary>
   /// <param name="user"></param>
   /// <returns></returns>
-  Task AddUser(User user);
-  Task EditUser(User user);
-  User? GetUserById(string userId);
-  Task<User[]> GetAllUsers();
+  Task AddUser(BlogUser user);
+  Task EditUser(BlogUser user);
+  BlogUser? GetUserById(string userId);
+  Task<BlogUser[]> GetAllUsers();
   Task DeleteUser(Guid userId);
 }

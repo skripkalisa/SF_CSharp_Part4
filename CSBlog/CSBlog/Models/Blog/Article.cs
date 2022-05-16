@@ -7,7 +7,7 @@ public class Article
   public Guid Id { get; set; }  = Guid.NewGuid();
   public Guid UserId { get; set; }
 
-  public User.User Author { get; set; } = null!;
+  public BlogUser Author { get; set; } = null!;
 
   [Required (ErrorMessage = "This field is required.")]
   [StringLength(64)]
