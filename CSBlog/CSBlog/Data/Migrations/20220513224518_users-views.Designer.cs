@@ -3,6 +3,7 @@ using System;
 using CSBlog.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CSBlog.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220513224518_users-views")]
+    partial class usersviews
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.5");
@@ -199,6 +201,10 @@ namespace CSBlog.Data.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Name")
                         .HasMaxLength(256)
                         .HasColumnType("TEXT");
@@ -214,6 +220,8 @@ namespace CSBlog.Data.Migrations
                         .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityRole");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -322,6 +330,23 @@ namespace CSBlog.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("CSBlog.Models.User.UserRole", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityRole");
+
+                    b.Property<string>("BlogUserId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("TEXT");
+
+                    b.HasIndex("BlogUserId");
+
+                    b.HasDiscriminator().HasValue("UserRole");
+                });
+
             modelBuilder.Entity("CSBlog.Models.Blog.Comment", b =>
                 {
                     b.HasOne("CSBlog.Models.Blog.Article", null)
@@ -389,11 +414,23 @@ namespace CSBlog.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("CSBlog.Models.User.UserRole", b =>
+                {
+                    b.HasOne("CSBlog.Models.User.BlogUser", null)
+                        .WithMany("UserRole")
+                        .HasForeignKey("BlogUserId");
+                });
+
             modelBuilder.Entity("CSBlog.Models.Blog.Article", b =>
                 {
                     b.Navigation("Comments");
 
                     b.Navigation("Tags");
+                });
+
+            modelBuilder.Entity("CSBlog.Models.User.BlogUser", b =>
+                {
+                    b.Navigation("UserRole");
                 });
 #pragma warning restore 612, 618
         }

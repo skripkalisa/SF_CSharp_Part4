@@ -5,10 +5,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CSBlog.Data;
 
-public sealed class ApplicationDbContext : IdentityDbContext
+public sealed class ApplicationDbContext : IdentityDbContext<BlogUser>
 {
-  public  DbSet<User> BlogUsers { get; set; } = null!;
-
+  
+  public  DbSet<BlogUser> BlogUsers { get; set; } = null!;
+  
   public DbSet<Article> Articles { get; set; } = null!;
 
   public DbSet<Comment> Comments { get; set; } = null!;
@@ -21,10 +22,10 @@ public sealed class ApplicationDbContext : IdentityDbContext
     Database.EnsureCreated();
   }
 
-  protected override void OnModelCreating(ModelBuilder modelBuilder)
-  {
-    base.OnModelCreating(modelBuilder);
-
-    modelBuilder.Entity<Article>();
-  }
+  // protected override void OnModelCreating(ModelBuilder modelBuilder)
+  // {
+  //   base.OnModelCreating(modelBuilder);
+  //
+  //   modelBuilder.Entity<Article>();
+  // }
 }
