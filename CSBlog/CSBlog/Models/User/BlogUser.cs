@@ -1,12 +1,10 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using CSBlog.Models.User;
 using Microsoft.AspNetCore.Identity;
 
-namespace CSBlog.Models.Blog;
-
-public class BlogUser 
+namespace CSBlog.Models.User;
+public class BlogUser : IdentityUser
 {
   public Guid Id { get; set; } = Guid.NewGuid();
 

@@ -1,4 +1,5 @@
 using CSBlog.Models.Blog;
+using CSBlog.Models.User;
 using Microsoft.EntityFrameworkCore;
 
 namespace CSBlog.Data.Repository;

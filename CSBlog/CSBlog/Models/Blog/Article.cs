@@ -1,4 +1,6 @@
 using System.ComponentModel.DataAnnotations;
+using CSBlog.Models.User;
+
 namespace CSBlog.Models.Blog;
 
 

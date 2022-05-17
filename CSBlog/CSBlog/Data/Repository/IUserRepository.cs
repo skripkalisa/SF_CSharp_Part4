@@ -1,4 +1,5 @@
 using CSBlog.Models.Blog;
+using CSBlog.Models.User;
 
 namespace CSBlog.Data.Repository;
 
