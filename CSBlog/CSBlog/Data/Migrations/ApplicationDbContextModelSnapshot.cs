@@ -15,7 +15,7 @@ namespace CSBlog.Data.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "6.0.4");
+            modelBuilder.HasAnnotation("ProductVersion", "6.0.5");
 
             modelBuilder.Entity("CSBlog.Models.Blog.Article", b =>
                 {
@@ -24,7 +24,6 @@ namespace CSBlog.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("AuthorId")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("Edited")
@@ -39,6 +38,7 @@ namespace CSBlog.Data.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
+                        .HasMaxLength(64)
                         .HasColumnType("TEXT");
 
                     b.Property<Guid>("UserId")
@@ -68,6 +68,7 @@ namespace CSBlog.Data.Migrations
 
                     b.Property<string>("Text")
                         .IsRequired()
+                        .HasMaxLength(2048)
                         .HasColumnType("TEXT");
 
                     b.Property<Guid>("UserId")
@@ -91,6 +92,7 @@ namespace CSBlog.Data.Migrations
 
                     b.Property<string>("TagName")
                         .IsRequired()
+                        .HasMaxLength(32)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -98,26 +100,6 @@ namespace CSBlog.Data.Migrations
                     b.HasIndex("ArticleId");
 
                     b.ToTable("Tags");
-                });
-
-            modelBuilder.Entity("CSBlog.Models.User.UserRole", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserRole");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -322,13 +304,9 @@ namespace CSBlog.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("CSBlog.Models.User.User", b =>
+            modelBuilder.Entity("CSBlog.Models.User.BlogUser", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
-
-                    b.Property<string>("Avatar")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -338,24 +316,20 @@ namespace CSBlog.Data.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Login")
-                        .IsRequired()
+                    b.Property<DateTime>("Registered")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Password")
-                        .IsRequired()
+                    b.Property<DateTime>("Updated")
                         .HasColumnType("TEXT");
 
-                    b.HasDiscriminator().HasValue("User");
+                    b.HasDiscriminator().HasValue("BlogUser");
                 });
 
             modelBuilder.Entity("CSBlog.Models.Blog.Article", b =>
                 {
-                    b.HasOne("CSBlog.Models.User.User", "Author")
+                    b.HasOne("CSBlog.Models.User.BlogUser", "Author")
                         .WithMany()
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AuthorId");
 
                     b.Navigation("Author");
                 });
@@ -374,13 +348,6 @@ namespace CSBlog.Data.Migrations
                     b.HasOne("CSBlog.Models.Blog.Article", null)
                         .WithMany("Tags")
                         .HasForeignKey("ArticleId");
-                });
-
-            modelBuilder.Entity("CSBlog.Models.User.UserRole", b =>
-                {
-                    b.HasOne("CSBlog.Models.User.User", null)
-                        .WithMany("UserRole")
-                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -439,11 +406,6 @@ namespace CSBlog.Data.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("Tags");
-                });
-
-            modelBuilder.Entity("CSBlog.Models.User.User", b =>
-                {
-                    b.Navigation("UserRole");
                 });
 #pragma warning restore 612, 618
         }

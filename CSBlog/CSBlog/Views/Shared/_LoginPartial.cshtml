@@ -1,12 +1,11 @@
-@using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.Mvc.TagHelpers
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
-
+@using CSBlog.Models.User
+@inject SignInManager<BlogUser> SignInManager
+@inject UserManager<BlogUser> UserManager
 <ul class="navbar-nav">
   @if (SignInManager.IsSignedIn(User))
   {
-    <li class="nav-item">
+     <li class="nav-item"> 
       <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
     </li>
     <li class="nav-item">

@@ -1,11 +1,12 @@
 ﻿using CSBlog.Models.Blog;
 using CSBlog.Models.User;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace CSBlog.Data;
 
-public sealed class ApplicationDbContext : IdentityDbContext
+public sealed class ApplicationDbContext : IdentityDbContext<IdentityUser>
 {
   public  DbSet<BlogUser> BlogUsers { get; set; } = null!;
 
@@ -21,10 +22,20 @@ public sealed class ApplicationDbContext : IdentityDbContext
     Database.EnsureCreated();
   }
 
-  protected override void OnModelCreating(ModelBuilder modelBuilder)
-  {
-    base.OnModelCreating(modelBuilder);
-
-    modelBuilder.Entity<Article>();
-  }
+//   protected override void OnModelCreating(ModelBuilder modelBuilder)
+//   {
+//     base.OnModelCreating(modelBuilder);
+//
+//     modelBuilder.Entity<Article>();
+//     modelBuilder.ApplyConfiguration(new BlogUserEntityConfiguration());
+//   }
+// }
+//
+// public class BlogUserEntityConfiguration : IEntityTypeConfiguration<BlogUser>
+// {
+//   public void Configure(EntityTypeBuilder<BlogUser> builder)
+//   {
+//     builder.Property(u => u.FirstName).HasMaxLength(32);
+//     builder.Property(u => u.LastName).HasMaxLength(32);
+//   }
 }
