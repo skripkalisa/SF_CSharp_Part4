@@ -26,8 +26,8 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("User", policy => policy.RequireClaim("Role", "Admin, Moderator, User"));
 });
 builder.Services.AddSingleton<ITempDataProvider, CookieTempDataProvider>();
-builder.Services.AddScoped<IBlogRepository, BlogRepository>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
+// builder.Services.AddScoped<IBlogRepository, BlogRepository>();
+// builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddRazorPages()
   .AddRazorRuntimeCompilation();
 var app = builder.Build();
