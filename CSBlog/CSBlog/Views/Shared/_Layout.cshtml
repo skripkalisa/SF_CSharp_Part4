@@ -1,4 +1,8 @@
 ﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+
+@using CSBlog.Models.User
+@inject SignInManager<BlogUser> SignInManager
+@inject UserManager<BlogUser> UserManager
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -41,6 +45,28 @@
           @* <li class="nav-item"> *@
           @*   <a class="nav-link text-dark" asp-area="" asp-controller="Role" asp-action="Index">Roles</a> *@
           @* </li> *@
+          <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Users</a>
+          </li>
+          @if (SignInManager.IsSignedIn(User))
+          {
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Role Access Demo
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li class="nav-item">
+                  <a class="dropdown-item" asp-area="" asp-controller="Role" asp-action="Index">Roles</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" asp-area="" asp-controller="Role" asp-action="Moderator">Moderator</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" asp-area="" asp-controller="Role" asp-action="Admin">Admin</a>
+                </li>
+              </ul>
+            </li>
+          }
         </ul>
         <partial name="_LoginPartial"/>
       </div>
@@ -99,7 +125,7 @@
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>
 <partial name="_ValidationScriptsPartial"></partial>
-@await RenderSectionAsync("Scripts", required: false)
+@await RenderSectionAsync("Scripts", false)
 
 </body>
 </html>

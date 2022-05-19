@@ -1,3 +1,4 @@
+using CSBlog.Core.Repository;
 using CSBlog.Models.User;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,6 +11,11 @@ public class UserRepository : IUserRepository
   public UserRepository(ApplicationDbContext context)
   {
     _context = context;
+  }
+
+  public ICollection<BlogUser> GetUsers()
+  {
+    return _context.BlogUsers.ToList();
   }
 
   public async Task AddUser(BlogUser user)
@@ -29,7 +35,7 @@ public class UserRepository : IUserRepository
       if (user.LastName != string.Empty) blogUser.LastName = user.LastName;
       // if (user.Login != string.Empty) blogUser.Login = user.Login;
       // if (user.Password != string.Empty) blogUser.Password = user.Password;
-      if (user.Avatar != null ) blogUser.Avatar = user.Avatar;
+      if (user.Avatar != null) blogUser.Avatar = user.Avatar;
       // if (user.UserRole.Count > 0)
       // {
       //   foreach (var role in user.UserRole)
@@ -41,6 +47,13 @@ public class UserRepository : IUserRepository
     }
 
     await _context.SaveChangesAsync();
+  }
+
+  public BlogUser UpdateUser(BlogUser user)
+  {
+    _context.Update(user);
+    _context.SaveChanges();
+    return user;
   }
 
   public BlogUser? GetUserById(string userId)

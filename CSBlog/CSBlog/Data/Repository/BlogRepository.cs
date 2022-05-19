@@ -1,3 +1,4 @@
+using CSBlog.Core.Repository;
 using CSBlog.Models.Blog;
 using Microsoft.EntityFrameworkCore;
 
@@ -33,10 +34,8 @@ public class BlogRepository : IBlogRepository
       art.Text = article.Text;
 
       foreach (var tag in article.Tags)
-      {
         if (!art.Tags.Contains(tag))
           art.Tags.Add(tag);
-      }
 
       art.Edited = DateTime.Now;
     }

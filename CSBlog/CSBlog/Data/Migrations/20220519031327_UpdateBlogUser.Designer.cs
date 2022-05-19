@@ -3,6 +3,7 @@ using System;
 using CSBlog.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CSBlog.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220519031327_UpdateBlogUser")]
+    partial class UpdateBlogUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.5");
@@ -187,12 +189,11 @@ namespace CSBlog.Data.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
+                    b.Property<string>("BlogUserId")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
@@ -205,13 +206,13 @@ namespace CSBlog.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BlogUserId");
+
                     b.HasIndex("NormalizedName")
                         .IsUnique()
                         .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityRole");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -320,18 +321,6 @@ namespace CSBlog.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("CSBlog.Models.User.UserRole", b =>
-                {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityRole");
-
-                    b.Property<string>("BlogUserId")
-                        .HasColumnType("TEXT");
-
-                    b.HasIndex("BlogUserId");
-
-                    b.HasDiscriminator().HasValue("UserRole");
-                });
-
             modelBuilder.Entity("CSBlog.Models.Blog.Article", b =>
                 {
                     b.HasOne("CSBlog.Models.User.BlogUser", "Author")
@@ -355,6 +344,13 @@ namespace CSBlog.Data.Migrations
                     b.HasOne("CSBlog.Models.Blog.Article", null)
                         .WithMany("Tags")
                         .HasForeignKey("ArticleId");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+                {
+                    b.HasOne("CSBlog.Models.User.BlogUser", null)
+                        .WithMany("UserRole")
+                        .HasForeignKey("BlogUserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -408,13 +404,6 @@ namespace CSBlog.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("CSBlog.Models.User.UserRole", b =>
-                {
-                    b.HasOne("CSBlog.Models.User.BlogUser", null)
-                        .WithMany("UserRoleList")
-                        .HasForeignKey("BlogUserId");
-                });
-
             modelBuilder.Entity("CSBlog.Models.Blog.Article", b =>
                 {
                     b.Navigation("Comments");
@@ -424,7 +413,7 @@ namespace CSBlog.Data.Migrations
 
             modelBuilder.Entity("CSBlog.Models.User.BlogUser", b =>
                 {
-                    b.Navigation("UserRoleList");
+                    b.Navigation("UserRole");
                 });
 #pragma warning restore 612, 618
         }

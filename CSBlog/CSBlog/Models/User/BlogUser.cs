@@ -8,6 +8,8 @@ public class BlogUser : IdentityUser
 
   // [Required(ErrorMessage = "This field is required.")]
   // [StringLength(32)]
+
+
   public string FirstName { get; set; } = string.Empty;
 
   // [Required(ErrorMessage = "This field is required.")]
@@ -26,8 +28,9 @@ public class BlogUser : IdentityUser
   // [PasswordPropertyText]
   // public string Password { get; set; } = string.Empty;
 
-  // public List<UserRole> UserRole { get; set; } = new();
+  // public List<UserRole> UserRoleList { get; set; } = null!;
 
   public DateTime Registered { get; set; } = DateTime.Now;
   public DateTime Updated { get; set; } 
 }
+

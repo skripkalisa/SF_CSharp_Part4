@@ -1,6 +1,6 @@
 using CSBlog.Models.Blog;
 
-namespace CSBlog.Core;
+namespace CSBlog.Core.Repository;
 
 public interface IBlogRepository
 {
