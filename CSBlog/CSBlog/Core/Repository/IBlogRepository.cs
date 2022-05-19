@@ -1,6 +1,6 @@
 using CSBlog.Models.Blog;
 
-namespace CSBlog.Data.Repository;
+namespace CSBlog.Core;
 
 public interface IBlogRepository
 {
@@ -10,6 +10,7 @@ public interface IBlogRepository
   /// <param name="article"></param>
   /// <returns></returns>
   Task AddArticle(Article article);
+
   Task EditArticle(Article article);
   Task<Article[]> GetAllArticles();
   Task<Article[]> GetArticlesByAuthor(Guid userId);
@@ -21,6 +22,7 @@ public interface IBlogRepository
   /// <param name="comment"></param>
   /// <returns></returns>
   Task AddComment(Comment comment);
+
   Task EditComment(Comment comment);
   Comment GetCommentById(Guid commentId);
   Task<Comment[]> GetAllComments();
@@ -32,6 +34,7 @@ public interface IBlogRepository
   /// <param name="tag"></param>
   /// <returns></returns>
   Task AddTag(Tag tag);
+
   Task EditTag(Tag tag);
   Tag GetTagById(Guid tagId);
   Task<Tag[]> GetAllTags();

@@ -1,6 +1,6 @@
 using CSBlog.Models.User;
 
-namespace CSBlog.Data.Repository;
+namespace CSBlog.Core;
 
 public interface IUserRepository
 {
@@ -9,6 +9,9 @@ public interface IUserRepository
   /// </summary>
   /// <param name="user"></param>
   /// <returns></returns>
+  ///
+  ICollection<BlogUser> GetUsers();
+
   Task AddUser(BlogUser user);
   Task EditUser(BlogUser user);
   BlogUser? GetUserById(string userId);
