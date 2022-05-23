@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
 
 namespace CSBlog.Models.User;
+
 public class BlogUser : IdentityUser
 {
   // public Guid Id { get; set; } = Guid.NewGuid();
@@ -17,8 +18,6 @@ public class BlogUser : IdentityUser
   public string LastName { get; set; } = string.Empty;
 
 
-
-
   [NotMapped]
   // [FileExtensions(Extensions = "jpg, jpeg, png, svg")]
   public IFormFile? Avatar { get; set; }
@@ -31,6 +30,10 @@ public class BlogUser : IdentityUser
   // public List<UserRole> UserRoleList { get; set; } = null!;
 
   public DateTime Registered { get; set; } = DateTime.Now;
-  public DateTime Updated { get; set; } 
-}
+  public DateTime Updated { get; set; }
 
+  public string GetFullName()
+  {
+    return $"{FirstName} {LastName}";
+  }
+}

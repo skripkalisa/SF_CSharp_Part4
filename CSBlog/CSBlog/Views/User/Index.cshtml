@@ -1,13 +1,15 @@
 @using CSBlog.Models.User
+@using CSBlog.Core
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @using NuGet.Protocol
 @model ICollection<CSBlog.Models.User.BlogUser>
 @inject UserManager<BlogUser> BlogUserManager
-@* @model dynamic *@
-@* @model CSBlog.Core.ViewModels.EditUserViewModel *@
 
 @{
   ViewData["Title"] = "User Page";
   Layout = "_Layout";
+  var userName = User.Identity?.Name;
+  var userIdentity = BlogUserManager.FindByNameAsync(userName).Result;
 }
 
 <h2>User View Index</h2>
@@ -22,6 +24,7 @@
       <th scope="col">Last Name</th>
       <th scope="col">Email</th>
       <th scope="col">Edit</th>
+      <th scope="col">Delete</th>
     </tr>
     </thead>
     <tbody>
@@ -31,19 +34,38 @@
         <th scope="row">@BlogUserManager.GetRolesAsync(user).Result.ToJson()</th>
         <td>@user.FirstName</td>
         <td>@user.LastName</td>
-        <td>@user.Email</td>
         <td>
-          <a asp-controller="User" asp-action="Edit" asp-route-id="@user.Id">Edit</a>
+          @if (BlogUserManager.GetRolesAsync(userIdentity).Result.Contains(Constants.Roles.Administrator))
+          {
+            @user.Email
+          }
+          else
+          {
+            <span>-</span>
+          }
+        </td>
+        <td>
+          @if (BlogUserManager.GetRolesAsync(userIdentity).Result.Contains(Constants.Roles.Administrator))
+          {
+            <a asp-controller="User" asp-action="Edit" asp-route-id="@user.Id">Edit</a>
+          }
+          else
+          {
+            <span>-</span>
+          }
+        </td>
+        <td>
+          @if (BlogUserManager.GetRolesAsync(userIdentity).Result.Contains(Constants.Roles.Administrator))
+          {
+            <a asp-controller="User" asp-action="Delete" asp-route-id="@user.Id">Delete</a>
+          }
+          else
+          {
+            <span>-</span>
+          }
         </td>
 
       </tr>
-
-    @* <tr class="table-light"> *@
-    @*   <th scope="row">Light</th> *@
-    @*   <td>Column content</td> *@
-    @*   <td>Column content</td> *@
-    @*   <td>Column content</td> *@
-    @* </tr> *@
     }
     </tbody>
   </table>

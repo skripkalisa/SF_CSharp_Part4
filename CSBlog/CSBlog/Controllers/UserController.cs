@@ -1,7 +1,9 @@
 using System.Diagnostics;
+using CSBlog.Core;
 using CSBlog.Core.Repository;
-using CSBlog.Core.ViewModels;
+using CSBlog.Core.ViewModels.User;
 using CSBlog.Models.User;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -27,6 +29,7 @@ public class UserController : Controller
   }
 
   [HttpGet]
+  [Authorize(Policy = Constants.Policies.RequireAdmin)]
   public async Task<IActionResult> Edit(string id)
   {
     var user = _unitOfWork.User.GetUserById(id);
@@ -53,54 +56,52 @@ public class UserController : Controller
   }
 
   [HttpPost]
+  [Authorize(Policy = Constants.Policies.RequireAdmin)]
   public async Task<IActionResult> Edit(EditUserViewModel data)
   {
-    if (ModelState.IsValid)
+    if (!ModelState.IsValid) return View(data);
+
+    var user = _unitOfWork.User.GetUserById(data.BlogUser.Id);
+    if (user == null) return NotFound();
+
+    user.FirstName = data.BlogUser.FirstName;
+    user.LastName = data.BlogUser.LastName;
+    user.Email = data.BlogUser.Email;
+    List<string> rolesToAdd = new();
+    List<string> rolesToRemove = new();
+
+    var userRoles = await _signInManager.UserManager.GetRolesAsync(user);
+    foreach (var role in data.UserRoles)
     {
-      var user = _unitOfWork.User.GetUserById(data.BlogUser.Id);
-      if (user == null)
-      {
-        return NotFound();
-      }
-
-      user.FirstName = data.BlogUser.FirstName;
-      user.LastName = data.BlogUser.LastName;
-      user.Email = data.BlogUser.Email;
-      List<string> rolesToAdd = new();
-      List<string> rolesToRemove = new();
-
-      var userRoles = await _signInManager.UserManager.GetRolesAsync(user);
-      foreach (var role in data.UserRoles)
-      {
-        // var existingRole = userRoles.FirstOrDefault(ur => ur == role.Text);
-        if (role.Selected && !userRoles.Contains(role.Text)) rolesToAdd.Add(role.Text);
-         if (!role.Selected && userRoles.Contains(role.Text)) rolesToRemove.Add(role.Text);
-      }
-
-      if (rolesToAdd.Any())
-      {
-        await _signInManager.UserManager.AddToRolesAsync(user, rolesToAdd);
-      }
-
-      if (rolesToRemove.Any())
-      {
-        await _signInManager.UserManager.RemoveFromRolesAsync(user, rolesToRemove);
-      }
-      user.Updated = DateTime.Now;
-
-      _unitOfWork.User.UpdateUser(user);
-
-      // foreach (var role in userRoles)
-      // {
-      //   if (!user.UserRoleList.Contains(role))
-      //     user.UserRoleList.Add(role);
-      // }
-
-      // return View(data);
-      return RedirectToAction("Index");
+      if (role.Selected && !userRoles.Contains(role.Text)) rolesToAdd.Add(role.Text);
+      if (!role.Selected && userRoles.Contains(role.Text)) rolesToRemove.Add(role.Text);
     }
 
-    // return Json(data);
-    return View(data);
+    if (rolesToAdd.Any()) await _signInManager.UserManager.AddToRolesAsync(user, rolesToAdd);
+
+    if (rolesToRemove.Any()) await _signInManager.UserManager.RemoveFromRolesAsync(user, rolesToRemove);
+    user.Updated = DateTime.Now;
+
+    _unitOfWork.User.UpdateUser(user);
+
+    return RedirectToAction("Index");
+  }
+
+  [HttpGet]
+  [Authorize(Policy = Constants.Policies.RequireAdmin)]
+  public IActionResult Delete(BlogUser data)
+  {
+    var user = _unitOfWork.User.GetUserById(data.Id);
+
+    return View(user);
+  }
+
+  [HttpPost]
+  [Authorize(Policy = Constants.Policies.RequireAdmin)]
+  public async Task<IActionResult> Delete(string id)
+  {
+    await _unitOfWork.User.DeleteUser(id);
+
+    return RedirectToAction("Index");
   }
 }

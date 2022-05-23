@@ -1,7 +1,7 @@
 using CSBlog.Models.User;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace CSBlog.Core.ViewModels;
+namespace CSBlog.Core.ViewModels.User;
 
 public class EditUserViewModel
 {

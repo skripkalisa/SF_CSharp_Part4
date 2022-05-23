@@ -1,0 +1,10 @@
+@using CSBlog.Models.User
+@inject UserManager<BlogUser> BlogUserManager
+@{
+  var userName = User.Identity?.Name ?? string.Empty;
+  BlogUser userIdentity = new BlogUser();
+  if (userName != String.Empty)
+  {
+    userIdentity = BlogUserManager.FindByNameAsync(userName).Result;
+  }
+}

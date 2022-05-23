@@ -1,0 +1,15 @@
+@using CSBlog.Models.Blog
+@using CSBlog.Core.Repository
+@model IEnumerable<CSBlog.Models.Blog.Tag>
+@inject IRepository<Tag> Tag
+
+  <h2>Add Tags</h2>
+  <div class="d-flex flex-row flex-wrap gap-1 py-3 align-items-center">
+    @foreach (var tag in Tag.GetAll())
+    {
+      <div class="form-check  form-check-inline">
+        <label class="form-check-label" for="@tag.Id">@tag.TagName</label>
+        <input class="form-check-input" type="checkbox" id="@tag.Id">
+      </div>
+    }
+  </div>

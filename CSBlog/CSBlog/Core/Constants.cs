@@ -6,6 +6,7 @@ public static class Constants
   {
     public const string Administrator = "Administrator";
     public const string Moderator = "Moderator";
+    public const string Author = "Author";
     public const string User = "User";
   }
 

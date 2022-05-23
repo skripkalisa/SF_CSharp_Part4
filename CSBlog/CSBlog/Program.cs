@@ -3,6 +3,7 @@ using CSBlog.Core.Repository;
 using Microsoft.AspNetCore.Identity;
 using CSBlog.Data;
 using CSBlog.Data.Repository;
+using CSBlog.Models.Blog;
 using CSBlog.Models.User;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
@@ -13,9 +14,10 @@ var builder = WebApplication.CreateBuilder(args);
 // ============================================
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-
+var sqLiteConnectionString = builder.Configuration.GetConnectionString("SQliteConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-  options.UseSqlite(connectionString));
+  options.UseSqlite(sqLiteConnectionString));
+  // options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<BlogUser>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -24,6 +26,8 @@ builder.Services.AddDefaultIdentity<BlogUser>(options => options.SignIn.RequireC
 
 
 builder.Services.AddControllersWithViews();
+// builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+//     .AddCookie();
 
 #region Authorization
 
@@ -58,6 +62,14 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+using (var scope = app.Services.CreateScope())
+{
+  var userManager = scope.ServiceProvider.GetRequiredService<UserManager<BlogUser>>();
+  var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+  // var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+  SeedData.Seed(roleManager, userManager);
+}
 
 app.MapControllerRoute(
   "default",
@@ -87,7 +99,7 @@ void AddAuthorizationPolicies(IServiceCollection services)
     {
       options.AddPolicy(Constants.Policies.RequireAdmin, policy => policy.RequireRole(Constants.Roles.Administrator));
       options.AddPolicy(Constants.Policies.RequireModerator, policy => policy.RequireRole(Constants.Roles.Moderator));
-      options.AddPolicy("RequireUser", policy => policy.RequireRole(Constants.Roles.User));
+      // options.AddPolicy("RequireUser", policy => policy.RequireRole(Constants.Roles.User));
     });
   }
 }
@@ -95,7 +107,10 @@ void AddAuthorizationPolicies(IServiceCollection services)
 void AddScoped()
 {
   builder.Services.AddSingleton<ITempDataProvider, CookieTempDataProvider>();
-// builder.Services.AddScoped<IBlogRepository, BlogRepository>();
+  builder.Services.AddScoped<IBlogRepository, BlogRepository>();
+  builder.Services.AddScoped<IRepository<Tag>, TagRepository>();
+  builder.Services.AddScoped<IRepository<Article>, ArticleRepository>();
+  builder.Services.AddScoped<IRepository<Comment>, CommentRepository>();
   builder.Services.AddScoped<IUserRepository, UserRepository>();
   builder.Services.AddScoped<IRoleRepository, RoleRepository>();
   builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();

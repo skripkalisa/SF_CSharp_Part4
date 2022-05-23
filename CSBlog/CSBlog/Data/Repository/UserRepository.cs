@@ -70,8 +70,9 @@ public class UserRepository : IUserRepository
 
   public async Task DeleteUser(string userId)
   {
-    var user = _context.BlogUsers.Where(user => user.Id == userId);
-    _context.Remove(user);
+    var user = GetUserById(userId);
+    if (user != null) _context.BlogUsers.Remove(user);
+
     await _context.SaveChangesAsync();
   }
 }

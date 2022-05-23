@@ -1,0 +1,19 @@
+@model CSBlog.Core.ViewModels.Blog.ArticleTagsViewModel
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using CSBlog.Core
+@using CSBlog.Models.Blog
+@using CSBlog.Models.User
+@inject UserManager<BlogUser> BlogUserManager
+@{
+  var userName = User.Identity?.Name ?? string.Empty;
+  BlogUser userIdentity = new BlogUser();
+  if (userName != String.Empty)
+  {
+    userIdentity = BlogUserManager.FindByNameAsync(userName).Result;
+  }
+
+  var article = Model.Articles;
+  
+}
+
+

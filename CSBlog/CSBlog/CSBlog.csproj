@@ -8,9 +8,6 @@
         <UseRazorSourceGenerator>false</UseRazorSourceGenerator>
         <LangVersion>default</LangVersion>
     </PropertyGroup>
-    <ItemGroup>
-        <None Update="app.db" CopyToOutputDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
-    </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.5" />
@@ -20,15 +17,25 @@
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.5" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.5">
         </PackageReference>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.5" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.5" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite.Core" Version="6.0.5" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.5" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.5">
         </PackageReference>
-        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.4" />
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.5" />
+        <PackageReference Include="TinyMCE" Version="6.0.2" />
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Migrations" />
       <Folder Include="Pages" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="app.db">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 

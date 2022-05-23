@@ -1,0 +1,21 @@
+@* @model CSBlog.Core.ViewModels.Blog.TagViewModel *@
+@* *@
+@* @{ *@
+@*   ViewBag.Title = "title"; *@
+@*   Layout = "_Layout"; *@
+@* } *@
+@* *@
+@* <h2>Crate a new tag</h2> *@
+@* @using (Html.BeginForm("CreateTag", "Blog")) *@
+@* { *@
+@*   $1$ @(Html.HiddenFor(j => Model, Model.BlogTag.Id))  #1# *@
+@*   <fieldset> *@
+@*     <legend>New Tag </legend> *@
+@*     <div class="form-group"> *@
+@*       <label class="col-form-label mt-4" asp-for="BlogTag.TagName"></label> *@
+@*       <input type="text" class="form-control" placeholder="Default input" asp-for="BlogTag.TagName"> *@
+@*       <span asp-validation-for="@Model.BlogTag.TagName" class="text-danger"></span> *@
+@*     </div> *@
+@*     <button type="submit" class="btn btn-primary">Submit</button> *@
+@*   </fieldset> *@
+@* } *@
