@@ -6,9 +6,7 @@
 
 [1. Этап 1](readme.md#Этап-1)
 
-[2. Этап 2](readme.md#Этап-2)
-
-[Screenshots](./CSBlog/readme.md)
+[2. Этап 2](readme.md#Этап-2) [Screenshots](./CSBlog/readme.md)
 
 [3. Этап 3](readme.md#Этап-3)
 
