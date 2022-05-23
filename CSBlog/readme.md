@@ -8,6 +8,8 @@
 
 [2. Этап 2](readme.md#Этап-2)
 
+[Screenshots](./CSBlog/readme.md)
+
 [3. Этап 3](readme.md#Этап-3)
 
 [4. Этап 4](readme.md#Этап-4)
