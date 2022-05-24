@@ -7,12 +7,39 @@ using CSBlog.Models.Blog;
 using CSBlog.Models.User;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
+using NLog;
+using NLog.Web;
+using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
 // ============================================
 // Add services to the container.
+
+
+var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
+logger.Debug("init main");
+try
+{
+  
+  // NLog: Setup NLog for Dependency injection
+    builder.Logging.ClearProviders();
+    builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+    builder.Host.UseNLog();
+
+}
+catch (Exception exception)
+{
+    // NLog: catch setup errors
+    logger.Error(exception, "Stopped program because of exception");
+    throw;
+}
+finally
+{
+    // Ensure to flush and stop internal timers/threads before application-exit (Avoid segmentation fault on Linux)
+    LogManager.Shutdown();
+}
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 var sqLiteConnectionString = builder.Configuration.GetConnectionString("SQliteConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -39,7 +66,13 @@ AddScoped();
 
 builder.Services.AddRazorPages()
   .AddRazorRuntimeCompilation();
+builder.Services.AddLogging(loggingBuilder =>
+{
+  loggingBuilder.AddConsole()
+    .AddFilter(DbLoggerCategory.Database.Command.Name, LogLevel.Warning);
 
+  loggingBuilder.AddDebug();
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -53,7 +86,6 @@ else
   // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
   app.UseHsts();
 }
-
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

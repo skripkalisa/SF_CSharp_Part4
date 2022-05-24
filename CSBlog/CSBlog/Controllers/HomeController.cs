@@ -11,6 +11,7 @@ public class HomeController : Controller
   public HomeController(ILogger<HomeController> logger)
   {
     _logger = logger;
+    _logger.LogDebug(1, "NLog injected into HomeController");
   }
 
   public IActionResult Index()
@@ -20,6 +21,7 @@ public class HomeController : Controller
 
   public IActionResult Privacy()
   {
+    _logger.LogInformation("Hello, this is Privacy page!");
     return View();
   }
 

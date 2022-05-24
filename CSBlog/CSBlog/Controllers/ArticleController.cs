@@ -62,6 +62,7 @@ public class ArticleController : Controller
   [Authorize(Roles = Constants.Roles.User)]
   public async Task<IActionResult> Read(CommentViewModel data, string? articleId)
   {
+    if (!ModelState.IsValid) return Json(data);
     var article = GetArticleEntity(articleId, out var articleTags);
 
     var comment = new Comment
@@ -150,6 +151,7 @@ public class ArticleController : Controller
   public async Task<IActionResult> Create(ArticleViewModel data)
   {
     if (!ModelState.IsValid) return Json(data);
+    
     var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
     var user = _unitOfWork.User.GetUserById(userId!);
     var userName = user?.GetFullName();
@@ -169,13 +171,6 @@ public class ArticleController : Controller
       Id = Guid.NewGuid().ToString(),
       Tags = tagList
     };
-      //   });
-      //     TagId = tag?.Id
-      //     ArticleId = article.Id,
-      //   {
-      //   articleTags.Add(new ArticleTag
-      // foreach (var tag in tagList)
-      // var articleTags = new List<ArticleTag>();
 
     await _unitOfWork.Article.Create(article);
 
