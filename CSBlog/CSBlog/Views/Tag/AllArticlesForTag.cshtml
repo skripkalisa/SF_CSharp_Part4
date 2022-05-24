@@ -1,20 +1,15 @@
-@using CSBlog.Models.User
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using CSBlog.Core
+@using System.Security.Claims
 @model CSBlog.Core.ViewModels.Blog.TagArticleViewModel
-@inject UserManager<BlogUser> BlogUserManager
-@{
-  var userName = User.Identity?.Name ?? string.Empty;
-  BlogUser userIdentity = new BlogUser();
-  if (userName != string.Empty)
-  {
-    userIdentity = BlogUserManager.FindByNameAsync(userName).Result;
-  }
-}
 
 @{
   ViewData["Title"] = "All Articles for Tag: " + Model.TagName;
   Layout = "_Layout";
+}
+
+@{
+  var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 }
 
 <h2>All Articles for Tag: @Model.TagName</h2>
@@ -51,7 +46,8 @@
         </div>
       </div>
 
-      @if (article.UserId == userIdentity?.Id || BlogUserManager.GetRolesAsync(userIdentity).Result.Contains(Constants.Roles.Moderator))
+      @if (article.UserId == userId || 
+           User.IsInRole(Constants.Roles.Moderator))
       {
         <div class="btn-group justify-content-end" role="group" aria-label="Basic example">
           <a asp-action="Update" asp-controller="Article" asp-route-id="@article.Id">

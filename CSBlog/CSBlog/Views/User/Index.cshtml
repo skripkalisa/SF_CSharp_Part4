@@ -8,8 +8,6 @@
 @{
   ViewData["Title"] = "User Page";
   Layout = "_Layout";
-  var userName = User.Identity?.Name;
-  var userIdentity = BlogUserManager.FindByNameAsync(userName).Result;
 }
 
 <h2>User View Index</h2>
@@ -35,7 +33,8 @@
         <td>@user.FirstName</td>
         <td>@user.LastName</td>
         <td>
-          @if (BlogUserManager.GetRolesAsync(userIdentity).Result.Contains(Constants.Roles.Administrator))
+          @* @if (BlogUserManager.GetRolesAsync(userIdentity).Result.Contains(Constants.Roles.Administrator)) *@
+          @if (User.IsInRole(Constants.Roles.Administrator))
           {
             @user.Email
           }
@@ -45,7 +44,7 @@
           }
         </td>
         <td>
-          @if (BlogUserManager.GetRolesAsync(userIdentity).Result.Contains(Constants.Roles.Administrator))
+          @if (User.IsInRole(Constants.Roles.Administrator))
           {
             <a asp-controller="User" asp-action="Edit" asp-route-id="@user.Id">Edit</a>
           }
@@ -55,7 +54,7 @@
           }
         </td>
         <td>
-          @if (BlogUserManager.GetRolesAsync(userIdentity).Result.Contains(Constants.Roles.Administrator))
+          @if (User.IsInRole(Constants.Roles.Administrator))
           {
             <a asp-controller="User" asp-action="Delete" asp-route-id="@user.Id">Delete</a>
           }

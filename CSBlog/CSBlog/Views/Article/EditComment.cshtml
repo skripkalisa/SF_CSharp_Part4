@@ -1,6 +1,7 @@
 @using CSBlog.Models.User
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using CSBlog.Core
+@using System.Security.Claims
 @model CSBlog.Core.ViewModels.Blog.CommentViewModel
 @inject UserManager<BlogUser> BlogUserManager
 
@@ -10,14 +11,7 @@
 }
 
 @{
-
-  var article = Model.Article;
-  var userName = User.Identity?.Name ?? String.Empty;
-  BlogUser userIdentity = new BlogUser();
-  if (userName != String.Empty)
-  {
-    userIdentity = BlogUserManager.FindByNameAsync(userName).Result;
-  }
+  var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 }
 
 
@@ -26,49 +20,50 @@
   <div class="card border-light mb-3">
     <div class="card-header">
       Tags:
-      @if (article?.Tags != null)
+      @foreach (var tag in Model.Article!.Tags)
       {
-        foreach (var tag in article.Tags)
-        {
-          <a class="text-decoration-none" href="#">
-            <span class="badge bg-info">
-              @tag.TagName
-            </span>
-          </a>
-        }
+        <a class="text-decoration-none" href="#">
+          <span class="badge bg-info">
+            @tag?.TagName
+          </span>
+        </a>
       }
     </div>
     <div class="card-body">
-      <a asp-action="Read" asp-controller="Article" asp-route-articleId="@article?.Id">
-        <h4 class="card-title">@article?.Title</h4>
+      <a asp-action="Read" asp-controller="Article" asp-route-articleId="@Model.Article?.Id">
+        <h4 class="card-title">@Model.Article?.Title</h4>
       </a>
       <small>
         by
         <a class="text-decoration-none" href="#">
-          <span class=" text-muted">@article?.Author</span>
+          <span class=" text-muted">@Model.Article?.Author</span>
         </a>
         on
-        <span class="">@article?.Published.Date.ToShortDateString()</span>
+        <span class="">@Model.Article?.Published.Date.ToShortDateString()</span>
       </small>
 
       <div class="card-text">
-        @Html.Raw(article?.Text?.Trim())
+        @Html.Raw(Model.Article?.Text?.Trim())
       </div>
     </div>
 
-    @if (userIdentity != null &&
-         (article?.UserId == userIdentity.Id ||
-          BlogUserManager.GetRolesAsync(userIdentity).Result.Contains(Constants.Roles.Moderator))
+
+    @{
+      System.Diagnostics.Debug.Assert(User.Identity != null, "User.Identity != null");
+    }
+    @if (User.Identity.IsAuthenticated &&
+         (Model.Article?.UserId == userId ||
+          User.IsInRole(Constants.Roles.Moderator))
       )
     {
       <div class="btn-group justify-content-end" role="group" aria-label="Basic example">
-        <a asp-action="Update" asp-controller="Article" asp-route-id="@article?.Id">
+        <a asp-action="Update" asp-controller="Article" asp-route-id="@Model.Article?.Id">
           <button type="button" class="btn btn-secondary mx-2">
             <i class="bi bi-pencil-fill"></i> Edit
           </button>
         </a>
 
-        <a asp-action="DeleteComment" asp-controller="Article" asp-route-id="@article?.Id">
+        <a asp-action="DeleteComment" asp-controller="Article" asp-route-id="@Model.Article?.Id">
           <button type="button" class="btn btn-secondary">
             <i class="bi bi-trash-fill"></i> Delete
           </button>
@@ -81,9 +76,9 @@
   <h6>Comments:</h6>
   @{
     System.Diagnostics.Debug
-      .Assert(article?.Comments != null, "Model.Comments != null");
+      .Assert(Model.Article?.Comments != null, "Model.Comments != null");
   }
-  @foreach (var comment in article.Comments)
+  @foreach (var comment in Model.Article.Comments)
   {
     <div class="card gap-2 my-4">
       <div class="card-body">
@@ -94,9 +89,8 @@
               @BlogUserManager.FindByIdAsync(comment.UserId).Result.GetFullName()
             </a>
           }
-          @if (comment.UserId == userIdentity?.Id || 
-               BlogUserManager.GetRolesAsync(userIdentity).Result
-                 .Contains(Constants.Roles.Moderator))
+          @if (comment.UserId == userId ||
+               User.IsInRole(Constants.Roles.Moderator))
           {
             <div class="btn-group justify-content-end" role="group" aria-label="Basic example">
               <a asp-action="EditComment" asp-controller="Article" asp-route-commentId="@comment.Id">
@@ -123,15 +117,14 @@
 
 
 </div>
-@if (userIdentity != null &&
-     BlogUserManager.GetRolesAsync(userIdentity).Result
-       .Contains(Constants.Roles.User)
+@if (User.Identity.IsAuthenticated &&
+     User.IsInRole(Constants.Roles.User)
   )
 {
   <partial name="_TextEditorPartial"/>
 @using (Html.BeginForm("EditComment", "Article"))
 {
-  @Html.HiddenFor(j =>   @Model.Article!.Id)
+  @Html.HiddenFor(j => @Model.Article!.Id)
   <fieldset class="align-items-start">
     <div class="form-group">
       <label class="col-form-label mt-4" asp-for="@Model.Text"></label>
@@ -142,7 +135,7 @@
         <span asp-validation-for="@Model.Text" class="text-danger"></span>
       </div>
       <div class="d-grid gap-2">
-        <button class="btn btn-primary" type="submit" id="edit-comment" asp-controller="Article" asp-action="EditComment"  asp-route-commentId="@Model.CommentId">Submit</button>
+        <button class="btn btn-primary" type="submit" id="edit-comment" asp-controller="Article" asp-action="EditComment" asp-route-commentId="@Model.CommentId">Submit</button>
       </div>
     </div>
   </fieldset>

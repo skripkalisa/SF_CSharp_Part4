@@ -1,6 +1,7 @@
 @using CSBlog.Models.User
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using CSBlog.Core
+@using System.Security.Claims
 @model CSBlog.Core.ViewModels.Blog.CommentViewModel
 @inject UserManager<BlogUser> BlogUserManager
 
@@ -8,13 +9,9 @@
   ViewData["Title"] = "Read article " + Model.Article?.Title;
   Layout = "_Layout";
 }
+
 @{
-  var userName = User.Identity?.Name ?? String.Empty;
-  BlogUser userIdentity = new BlogUser();
-  if (userName != String.Empty)
-  {
-    userIdentity = BlogUserManager.FindByNameAsync(userName).Result;
-  }
+  var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 }
 
 <div class="py-1">
@@ -52,9 +49,8 @@
       </div>
     </div>
 
-    @if (userIdentity != null &&
-         (Model.Article?.UserId == userIdentity.Id ||
-          BlogUserManager.GetRolesAsync(userIdentity).Result.Contains(Constants.Roles.Moderator))
+    @if (Model.Article?.UserId == userId ||
+          User.IsInRole(Constants.Roles.Moderator)
       )
     {
       <div class="btn-group justify-content-end" role="group" aria-label="Basic example">
@@ -89,9 +85,8 @@
               @BlogUserManager.FindByIdAsync(comment.UserId).Result.GetFullName()
             </a>
           }
-          @if (comment.UserId == userIdentity?.Id || 
-               BlogUserManager.GetRolesAsync(userIdentity).Result
-                 .Contains(Constants.Roles.Moderator))
+          @if (comment.UserId == userId || 
+               User.IsInRole(Constants.Roles.Moderator))
           {
             <div class="btn-group justify-content-end" role="group" aria-label="Basic example">
               <a asp-action="EditComment" asp-controller="Article" asp-route-commentId="@comment.Id">
@@ -118,8 +113,8 @@
 
 
 </div>
-@if (userIdentity != null &&
-     BlogUserManager.GetRolesAsync(userIdentity).Result.Contains(Constants.Roles.User)
+@if (
+     User.IsInRole(Constants.Roles.User)
   )
 {
   <partial name="_TextEditorPartial"/>

@@ -107,7 +107,6 @@ void AddAuthorizationPolicies(IServiceCollection services)
 void AddScoped()
 {
   builder.Services.AddSingleton<ITempDataProvider, CookieTempDataProvider>();
-  builder.Services.AddScoped<IBlogRepository, BlogRepository>();
   builder.Services.AddScoped<IRepository<Tag>, TagRepository>();
   builder.Services.AddScoped<IRepository<Article>, ArticleRepository>();
   builder.Services.AddScoped<IRepository<Comment>, CommentRepository>();

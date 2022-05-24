@@ -24,6 +24,9 @@
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.5">
         </PackageReference>
         <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.5" />
+        <PackageReference Include="NLog" Version="5.0.0" />
+        <PackageReference Include="NLog.Extensions.Logging" Version="5.0.0" />
+        <PackageReference Include="NLog.Web.AspNetCore" Version="5.0.0" />
         <PackageReference Include="TinyMCE" Version="6.0.2" />
     </ItemGroup>
 
@@ -36,6 +39,12 @@
       <None Update="app.db">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Views\Blog\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Blog\Tag\CreateTag.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Blog\Tag\Tags.cshtml" />
     </ItemGroup>
 
 

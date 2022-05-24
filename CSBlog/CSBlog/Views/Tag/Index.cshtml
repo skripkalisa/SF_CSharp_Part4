@@ -1,19 +1,16 @@
-@using CSBlog.Models.User
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using CSBlog.Core
 @model IEnumerable<CSBlog.Models.Blog.Tag>
-@inject UserManager<BlogUser> BlogUserManager
 
 @{
   ViewData["Title"] = "All Tags Page";
   Layout = "_Layout";
-  var userName = User.Identity?.Name;
-  var userIdentity = BlogUserManager.FindByNameAsync(userName).Result;
 }
+
 
 <div class="d-flex justify-content-between">
   <h2>Tags</h2>
-  @if (BlogUserManager.GetRolesAsync(userIdentity).Result.Contains(Constants.Roles.Moderator))
+  @if (User.IsInRole(Constants.Roles.Moderator))
   {
     <a asp-controller="Tag" asp-action="Create">
       <button class="btn  btn-primary my-2">Add new</button>
