@@ -25,7 +25,7 @@ try
   
   // NLog: Setup NLog for Dependency injection
     builder.Logging.ClearProviders();
-    builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+    builder.Logging.SetMinimumLevel(LogLevel.Trace);
     builder.Host.UseNLog();
 
 }
@@ -82,7 +82,7 @@ if (app.Environment.IsDevelopment())
 }
 else
 {
-  app.UseExceptionHandler("/Home/Error");
+  app.UseExceptionHandler("/Home/Oops");
   // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
   app.UseHsts();
 }

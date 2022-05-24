@@ -22,6 +22,7 @@ public class UserController : Controller
   }
 
   // GET
+  [Authorize(Policy = Constants.Policies.RequireModerator)]
   public IActionResult Index()
   {
     var users = _unitOfWork.User.GetUsers();
