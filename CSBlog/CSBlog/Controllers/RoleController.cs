@@ -6,16 +6,13 @@ namespace CSBlog.Controllers;
 
 public class RoleController : Controller
 {
-  // GET
-  // [Authorize(Roles = "User,Administrator,Moderator")]
-  // [Authorize(Policy = Constants.Policies.RequireAdmin)]
+
   [Authorize]
   public IActionResult Index()
   {
     return View();
   }
-
-  // [Authorize(Policy = "RequireModerator")]
+  
   [Authorize(Roles = $"{Constants.Roles.Administrator},{Constants.Roles.Moderator}")]
   public IActionResult Moderator()
   {

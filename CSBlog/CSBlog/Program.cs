@@ -40,16 +40,17 @@ finally
     // Ensure to flush and stop internal timers/threads before application-exit (Avoid segmentation fault on Linux)
     LogManager.Shutdown();
 }
+// var connectionString = builder.Configuration.GetConnectionString("DbConnection");
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-var sqLiteConnectionString = builder.Configuration.GetConnectionString("SQliteConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-  options.UseSqlite(sqLiteConnectionString));
+  options.UseSqlite(connectionString));
   // options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<BlogUser>(options => options.SignIn.RequireConfirmedAccount = true)
   .AddRoles<IdentityRole>()
-  .AddEntityFrameworkStores<ApplicationDbContext>();
+  .AddEntityFrameworkStores<ApplicationDbContext>()
+  ;
 
 
 builder.Services.AddControllersWithViews();
