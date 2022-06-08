@@ -6,7 +6,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <UserSecretsId>aspnet-CSBlog-8B4BAB30-1B07-4F05-B4E4-9170FF48250F</UserSecretsId>
         <UseRazorSourceGenerator>false</UseRazorSourceGenerator>
-        <LangVersion>default</LangVersion>
+        <LangVersion>10</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>

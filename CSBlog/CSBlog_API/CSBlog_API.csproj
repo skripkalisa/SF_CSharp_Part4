@@ -7,13 +7,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.9" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1" />
-<!--        <ProjectReference Include="/home/az/DEV/SkillFactory/SF_CSharp/Rider/SF_CSharp_Part4/CSBlog/CSBlog/CSBlog.csproj"/>-->
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="/home/az/DEV/SkillFactory/SF_CSharp/Rider/SF_CSharp_Part4/CSBlog/CSBlog/CSBlog.csproj" />
+      <ProjectReference Include="..\CSBlog\CSBlog.csproj" />
     </ItemGroup>
-
 
 </Project>
