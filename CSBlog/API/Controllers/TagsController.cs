@@ -10,7 +10,6 @@ namespace API.Controllers;
 [Route("api/[controller]")]
 public class TagsController : ControllerBase
 {
-  // private IOptions<HomeOptions> _options;
   private readonly IMapper _mapper;
   private readonly IUnitOfWork _unitOfWork;
 

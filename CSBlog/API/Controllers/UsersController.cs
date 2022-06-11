@@ -3,7 +3,6 @@ using AutoMapper;
 using CSBlog.Core.Repository;
 using CSBlog.Models.User;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace API.Controllers;
 

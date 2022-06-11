@@ -1,4 +1,3 @@
-using System.Collections;
 using API.Contracts.Articles;
 using API.Contracts.Tags;
 using AutoMapper;
@@ -7,7 +6,6 @@ using CSBlog.Data;
 using CSBlog.Models.Blog;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using NuGet.Protocol;
 
 namespace API.Controllers;
 

@@ -22,8 +22,6 @@ public class MappingProfile : Profile
     CreateMap<AddArticleRequest, Article>();
     CreateMap<AddCommentRequest, Comment>();
     CreateMap<AddUserRequest, BlogUser>();
-    // CreateMap<HomeOptions, InfoResponse>()
-    //     .ForMember(m => m.AddressInfo,
-    //         opt => opt.MapFrom(src => src.Address));
+
   }
 }

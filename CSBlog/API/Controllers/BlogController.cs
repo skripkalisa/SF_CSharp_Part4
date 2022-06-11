@@ -16,8 +16,8 @@ public class BlogController : ControllerBase
     _unitOfWork = unitOfWork;
   }
 
-  [HttpGet] // Для обслуживания Get-запросов
-  [Route("info")] // Настройка маршрута с помощью атрибутов
+  [HttpGet] 
+  [Route("info")]
   public IActionResult Info()
   {
     var articles = _unitOfWork.Article.GetAll().Count;

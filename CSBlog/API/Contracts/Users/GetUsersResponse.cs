@@ -1,5 +1,3 @@
-using CSBlog.Models.User;
-
 namespace API.Contracts.Users;
 
 public class GetUsersResponse

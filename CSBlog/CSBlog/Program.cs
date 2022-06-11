@@ -53,8 +53,7 @@ builder.Services.AddDefaultIdentity<BlogUser>(options => options.SignIn.RequireC
 
 
 builder.Services.AddControllersWithViews();
-// builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-//     .AddCookie();
+
 
 #region Authorization
 
@@ -98,7 +97,6 @@ using (var scope = app.Services.CreateScope())
 {
   var userManager = scope.ServiceProvider.GetRequiredService<UserManager<BlogUser>>();
   var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-  // var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
   SeedData.Seed(roleManager, userManager);
 }
@@ -107,25 +105,11 @@ app.MapControllerRoute(
   "default",
   "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
-// получение данных
-// app.MapGet("/", (ApplicationContext db) => db.Users.ToList());
+
 app.Run();
 
 void AddAuthorizationPolicies(IServiceCollection services)
 {
-// builder.Services.AddAuthorization(options =>
-// {
-//   options.AddPolicy("Admin", policy => policy.RequireClaim("Role", "Admin, Administrator"));
-//   options.AddPolicy("Moderator", policy => policy.RequireClaim("Role", "Admin, Moderator"));
-//   options.AddPolicy("User", policy => policy.RequireClaim("Role", "Admin, Moderator, User"));
-// });
-  // services.AddAuthorization(options =>
-  // {
-  //   options.AddPolicy("Admin", policy => policy.RequireClaim("Admin"));
-  //   // options.AddPolicy("Admin", policy => policy.RequireClaim("Role", "Admin, Administrator"));
-  //   // options.AddPolicy("Moderator", policy => policy.RequireClaim("Role", "Admin, Moderator"));
-  //   // options.AddPolicy("User", policy => policy.RequireClaim("Role", "Admin, Moderator, User"));
-  // });
   {
     services.AddAuthorization(options =>
     {

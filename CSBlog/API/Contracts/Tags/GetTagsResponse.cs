@@ -1,5 +1,3 @@
-using CSBlog.Core.ViewModels.Blog;
-
 namespace API.Contracts.Tags;
 
 public class GetTagsResponse
