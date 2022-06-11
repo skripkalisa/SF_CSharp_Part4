@@ -8,7 +8,7 @@ public class TagViewModel
   [Required]
   [StringLength(16, MinimumLength = 2, ErrorMessage = "Tag name must be string between 2 and 16 characters long")]
   [Display(Name = "Tag")]
-  public string TagName { get; set; } = null!;
+  public string? TagName { get; set; }
 
   // public IList<SelectListItem> TagNames { get; set; } = null!;
 }

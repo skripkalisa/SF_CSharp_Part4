@@ -6,9 +6,6 @@ namespace CSBlog.Core.ViewModels.Blog;
 public class ArticleViewModel
 {
   public Article? Article { get; set; }
-  
-  public IList<SelectListItem>? Tags { get; set; }
-  
 
-  
+  public IList<SelectListItem>? Tags { get; set; }
 }

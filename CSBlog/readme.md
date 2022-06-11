@@ -8,9 +8,9 @@
 
 [2. Этап 2](readme.md#Этап-2)
 
-[3. Этап 3](readme.md#Этап-3) [Screenshots](./CSBlog/readme.md)
+[3. Этап 3](readme.md#Этап-3)
 
-[4. Этап 4](readme.md#Этап-4)
+[4. Этап 4](readme.md#Этап-4) [Screenshots](./CSBlog/readme.md)
 
 # Описание проекта
 

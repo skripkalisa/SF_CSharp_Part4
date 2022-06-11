@@ -8,14 +8,13 @@ namespace CSBlog.Data;
 
 public sealed class ApplicationDbContext : IdentityDbContext<BlogUser>
 {
-  public DbSet<BlogUser> BlogUsers { get; set; } = null!;
+  public DbSet<BlogUser> BlogUsers { get; set; }
 
-  public DbSet<Article> Articles { get; set; } = null!;
+  public DbSet<Article> Articles { get; set; }
 
-  public DbSet<Comment> Comments { get; set; } = null!;
-  
-  public DbSet<Tag> Tags { get; set; } = null!;
+  public DbSet<Comment> Comments { get; set; }
 
+  public DbSet<Tag> Tags { get; set; }
 
 
   public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
@@ -44,10 +43,10 @@ public sealed class ApplicationDbContext : IdentityDbContext<BlogUser>
       .WithOne();
 
     modelBuilder
-    .Entity<Article>()
-    .HasMany(p => p.Tags)
-    .WithMany(p => p.Articles)
-    .UsingEntity(j => j.ToTable("ArticleTags"));
+      .Entity<Article>()
+      .HasMany(p => p.Tags)
+      .WithMany(p => p.Articles)
+      .UsingEntity(j => j.ToTable("ArticleTags"));
     modelBuilder.ApplyConfiguration(new BlogUserEntityConfiguration());
   }
 }

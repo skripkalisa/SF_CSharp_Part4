@@ -16,6 +16,7 @@ public interface IUserRepository
   Task EditUser(BlogUser user);
   BlogUser UpdateUser(BlogUser user);
   BlogUser? GetUserById(string userId);
+  BlogUser? GetUserByName(string userName);
   Task<BlogUser[]> GetAllUsers();
   Task DeleteUser(string userId);
 }

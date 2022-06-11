@@ -22,29 +22,28 @@ var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentCla
 logger.Debug("init main");
 try
 {
-  
   // NLog: Setup NLog for Dependency injection
-    builder.Logging.ClearProviders();
-    builder.Logging.SetMinimumLevel(LogLevel.Trace);
-    builder.Host.UseNLog();
-
+  builder.Logging.ClearProviders();
+  builder.Logging.SetMinimumLevel(LogLevel.Trace);
+  builder.Host.UseNLog();
 }
 catch (Exception exception)
 {
-    // NLog: catch setup errors
-    logger.Error(exception, "Stopped program because of exception");
-    throw;
+  // NLog: catch setup errors
+  logger.Error(exception, "Stopped program because of exception");
+  throw;
 }
 finally
 {
-    // Ensure to flush and stop internal timers/threads before application-exit (Avoid segmentation fault on Linux)
-    LogManager.Shutdown();
+  // Ensure to flush and stop internal timers/threads before application-exit (Avoid segmentation fault on Linux)
+  LogManager.Shutdown();
 }
+
 // var connectionString = builder.Configuration.GetConnectionString("DbConnection");
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
   options.UseSqlite(connectionString));
-  // options.UseSqlServer(connectionString));
+// options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<BlogUser>(options => options.SignIn.RequireConfirmedAccount = true)

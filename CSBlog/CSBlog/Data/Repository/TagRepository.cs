@@ -1,5 +1,7 @@
 using CSBlog.Core.Repository;
+using CSBlog.Data.Queries;
 using CSBlog.Models.Blog;
+
 
 namespace CSBlog.Data.Repository;
 
@@ -12,6 +14,13 @@ public class TagRepository : IRepository<Tag>
     _context = context;
   }
 
+  private static Tag DefaultTag =>
+    new()
+    {
+      Id = "0",
+      TagName = "Not Found"
+    };
+
 
   public ICollection<Tag> GetAll()
   {
@@ -21,12 +30,14 @@ public class TagRepository : IRepository<Tag>
 
   public Tag GetById(string? id)
   {
-    var defaultTag = new Tag
-    {
-      Id = Guid.NewGuid().ToString(),
-      TagName = "Not Found"
-    };
-    return _context.Tags.FirstOrDefault(t => t.Id.Equals(id)) ?? defaultTag;
+    return _context.Tags.FirstOrDefault(t => t.Id != null && t.Id.Equals(id)) ?? DefaultTag;
+  }
+
+
+  public Tag GetByName(string? name)
+  {
+    var tag = GetAll().FirstOrDefault(t => t.TagName == name);
+    return tag ?? DefaultTag;
   }
 
   public async Task Create(Tag item)

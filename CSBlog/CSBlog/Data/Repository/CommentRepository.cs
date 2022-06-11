@@ -12,6 +12,14 @@ public class CommentRepository : IRepository<Comment>
     _context = context;
   }
 
+  private static Comment DefaultComment =>
+    new()
+    {
+      Id = "0",
+      ArticleId = "0",
+      Text = null
+    };
+
   public ICollection<Comment> GetAll()
   {
     var comments = _context.Comments.ToList();
@@ -20,9 +28,14 @@ public class CommentRepository : IRepository<Comment>
 
   public Comment GetById(string? id)
   {
-    var comment = _context.Comments.FirstOrDefault(t => t.Id == id);
-    if (comment == null) return new Comment();
-    return comment;
+    var comment = GetAll().FirstOrDefault(t => t.Id == id);
+    return comment ?? DefaultComment;
+  }
+
+  public Comment GetByName(string? name)
+  {
+    var comment = GetAll().FirstOrDefault(t => t.Text == name);
+    return comment ?? DefaultComment;
   }
 
   public async Task Create(Comment item)

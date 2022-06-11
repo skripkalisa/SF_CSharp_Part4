@@ -114,7 +114,7 @@ public class ArticleController : Controller
     var comment = _unitOfWork.Comment.GetById(commentId);
     comment.Text = data.Text;
     await _unitOfWork.Comment.Update(comment);
-    return RedirectToAction("Read", "Article", new { articleId = data.Article?.Id });
+    return RedirectToAction("Read", "Article", new { articleId = data.ArticleId });
   }
 
 
@@ -151,12 +151,12 @@ public class ArticleController : Controller
   public async Task<IActionResult> Create(ArticleViewModel data)
   {
     if (!ModelState.IsValid) return Json(data);
-    
+
     var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
     var user = _unitOfWork.User.GetUserById(userId!);
     var userName = user?.GetFullName();
 
-    ICollection<Tag?> tagList = TagList(data);
+    var tagList = TagList(data);
 
 
     var article = new Article
@@ -185,7 +185,7 @@ public class ArticleController : Controller
     var article = _unitOfWork.Article.GetById(id);
     GetArticleTags();
     var tagListItems = TagListItems();
-    
+
     foreach (var tag in tagListItems)
       if (article.Tags != null && article.Tags.Any(a => a?.Id == tag.Value))
         tag.Selected = true;
@@ -236,7 +236,7 @@ public class ArticleController : Controller
       var item = new SelectListItem(
         tag.TagName,
         tag.Id,
-        tags.Any(t => t.TagName.Equals(t.TagName)))
+        tags.Any(t => t.TagName != null && t.TagName.Equals(t.TagName)))
       {
         Selected = false
       };
@@ -270,7 +270,7 @@ public class ArticleController : Controller
 
   private List<ICollection<Tag>?> GetArticleTags()
   {
-    List<ICollection<Tag?>> articleTags =
+    var articleTags =
       _context.Articles
         .Include(a => a.Tags).ToList()
         .Select(a => a.Tags).ToList();

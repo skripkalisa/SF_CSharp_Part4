@@ -12,6 +12,13 @@ public class ArticleRepository : IRepository<Article>
     _context = context;
   }
 
+  private static Article DefaultArticle =>
+    new()
+    {
+      Id = "0",
+      Title = "Not Found"
+    };
+
 
   public ICollection<Article> GetAll()
   {
@@ -21,13 +28,13 @@ public class ArticleRepository : IRepository<Article>
 
   public Article GetById(string? id)
   {
-    var defaultArticle = new Article
-    {
-      Id = Guid.NewGuid().ToString(),
-      Title = "Not Found"
-    };
+    return _context.Articles.FirstOrDefault(t => t.Id == id) ?? DefaultArticle;
+  }
 
-    return _context.Articles.FirstOrDefault(t => t.Id == id) ?? defaultArticle;
+  public Article GetByName(string? name)
+  {
+    var article = GetAll().FirstOrDefault(t => t.Title == name);
+    return article ?? DefaultArticle;
   }
 
   public async Task Create(Article item)

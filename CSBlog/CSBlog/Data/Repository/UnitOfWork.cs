@@ -1,4 +1,5 @@
 using CSBlog.Core.Repository;
+using CSBlog.Data.Queries;
 using CSBlog.Models.Blog;
 
 namespace CSBlog.Data.Repository;
